@@ -4,16 +4,17 @@ import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 //a class of teamLeaders List of objects
-class Leaders {
+class Leaders extends Object{
   String name;
   String email;
 
   Leaders({required this.name, required this.email});
 
-  @override
-  String toString() {
-    return '{ ${this.name}, ${this.email} }';
-  }
+  // @override
+  // String toString() {
+  //   //should be a json type list
+  //   return '{ ${this.name}, ${this.email} }';
+  // }
 }
 
 class TeamLeadMailPage extends StatefulWidget {
@@ -24,8 +25,9 @@ class TeamLeadMailPage extends StatefulWidget {
 }
 
 class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
-  final List teamLeadMailList =
-      []; //will be the final mail list that is pushed to the db
+  final List<Map<String, dynamic >>teamLeadMailList = [];
+  // final List teamLeadMailList =
+  //     []; //will be the final mail list that is pushed to the db
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
@@ -109,9 +111,10 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                     ElevatedButton.icon(
                       onPressed: () {
                         //add email to list
-                        teamLeadMailList.add(Leaders(
-                            name: _nameController.text,
-                            email: _emailController.text));
+                        
+                        teamLeadMailList.add({
+                            'name': '${_nameController.text}',
+                            'email': '${_emailController.text}'});
                         _emailController.clear(); //clears email field
                         _nameController.clear(); //clears name field
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -124,6 +127,7 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                     ElevatedButton(
                       onPressed: () {
                         if (teamLeadMailList.length > 0) {
+                          
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
