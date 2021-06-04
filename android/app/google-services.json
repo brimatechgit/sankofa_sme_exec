@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "950749718898",
+    "project_id": "sankofa-sme",
+    "storage_bucket": "sankofa-sme.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950749718898:android:01a6dfdc1322163812d5eb",
+        "android_client_info": {
+          "package_name": "com.example.sankofa_sme_exec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950749718898-2bn0tnk2nhjbvu4otuqjfl86ko503kaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiKgJ9Xod2am-j5QQwQhZL4D9TvLQ1dQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950749718898-2bn0tnk2nhjbvu4otuqjfl86ko503kaj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
