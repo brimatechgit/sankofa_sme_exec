@@ -10,6 +10,7 @@ class DiagnosticsPage extends StatefulWidget {
 }
 
 class _DiagnosticsPageState extends State<DiagnosticsPage> {
+  String status = 'WIP';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +26,110 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
               Flexible(
                   flex: 1,
                   child: Container(
-                      child: Text('Currently no diagnostics running!'))),
-              Flexible(
-                  flex: 0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DiagnosisPathPage()));
-                    },
-                    child: Text('Diagnosis'),
-                  ))
+                      child: Column(
+                    children: [
+                      //generate this card using a listview, using an array of assesments the user has engaged in
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DiagnosisPathPage()));
+                        },
+                        child: Card(
+                            margin: EdgeInsets.all(12.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Text('Finance ')),
+                                  SizedBox(width: 5.0),
+                                  //check if assesment is wip or completed
+                                  Text(status,
+                                      style: TextStyle(
+                                          color: Colors.yellowAccent)),
+                                  SizedBox(width: 10.0),
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                                      onPressed: () {},
+                                      icon: Icon(Icons.close),
+                                      label: Text('Stop'))
+                                ],
+                              ),
+                            )),
+                      ),
+                     GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DiagnosisPathPage()));
+                        },
+                                              child: Card(
+                            margin: EdgeInsets.all(12.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(22.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Text('Sales')),
+                                  SizedBox(width: 5.0),
+                                  //check if assesment is wip or completed, and chenge text color accordingly
+                                  Text('Completed',
+                                      style:
+                                          TextStyle(color: Colors.greenAccent)),
+                                  SizedBox(width: 10.0),
+                                  // ElevatedButton.icon(
+                                  //     onPressed: () {},
+                                  //     icon: Icon(Icons.close),
+                                  //     label: Text('Stop'))
+                                ],
+                              ),
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DiagnosisPathPage()));
+                        },
+                                              child: Card(
+                            margin: EdgeInsets.all(12.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(22.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Text('Communication')),
+                                  SizedBox(width: 5.0),
+                                  //check if assesment is wip or completed, and chenge text color accordingly
+                                  Text('Not started',
+                                      style: TextStyle(color: Colors.blueGrey)),
+                                  SizedBox(width: 10.0),
+                                  // ElevatedButton.icon(
+                                  //     onPressed: () {},
+                                  //     icon: Icon(Icons.close),
+                                  //     label: Text('Stop'))
+                                ],
+                              ),
+                            )),
+                      ),
+                    ],
+                  ))),
+              // Flexible(
+              //     flex: 1,
+              //     child: Container(
+              //         child: Text('Currently no diagnostics running!'))),
+              // Flexible(
+              //     flex: 0,
+              //     child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => DiagnosisPathPage()));
+              //       },
+              //       child: Text('Diagnosis'),
+              //     ))
             ]),
       ),
     );

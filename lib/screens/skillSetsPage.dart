@@ -7,6 +7,8 @@ import 'package:filter_list/filter_list.dart';
 
 List<String>? selectedCountList = [];
 List<dynamic> countList = [];
+List<Map<String, dynamic>> objList = [];
+var orderLines = <Map>[];
 
 class SkillSetsPage extends StatefulWidget {
   @override
@@ -18,14 +20,18 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
   Widget build(BuildContext context) {
     void _openFilterDialog(listVal, title) async {
       List<String> newList = [];
+      // objList.add({
+
+      // });
       for (var i = 0; i < listVal.length; i++) {
         newList.add(listVal[i]['Skill'].toString());
       }
+      // selectedCountList!.clear();
       await FilterListDialog.display<String>(context,
           listData: newList,
           selectedListData: selectedCountList,
           height: 480,
-          headlineText: "Select Count",
+          headlineText: title,
           searchFieldHintText: "Search Here", choiceChipLabel: (item) {
         return item;
       }, validateSelectedItem: (list, val) {
@@ -44,8 +50,19 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
         if (list != null) {
           //adds selected skills to
           setState(() {
+            //list of selected skills
+            // selectedCountList!.clear();
             selectedCountList = List.from(list);
+            
+            // selectedCountList!.forEach((element) {
+
+            //   objList.map((e) => null)
+            // });
+            //change skill sets color
           });
+          
+          objList.add({'SkillSet': '$title', 'Skill': '${[selectedCountList]}'});
+          orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
         }
         Navigator.pop(context);
       });
@@ -120,23 +137,63 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
           ),
           Flexible(
               flex: 0,
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.red)))),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SelectedSkillsPage()),
-                    );
-                  },
-                  child: Text('Review Skills (${selectedCountList!.length})'),
-                ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectedSkillsPage()),
+                          );
+                        },
+                        child: Text(
+                            'Review Skills (${selectedCountList!.length})'),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Notice"),
+                                content: Text(
+                                    "Please note, assessment creation process will be cancelled"),
+                                actions: [
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.blueGrey),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    label: Text('Continue'),
+                                    icon: Icon(Icons.keyboard_backspace),
+                                  ),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.green),
+                                      onPressed: () {},
+                                      child: Text('Cancel')),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Cancel'),
+                      ),
+                    ),
+                  ),
+                ],
               ))
         ],
       ),
