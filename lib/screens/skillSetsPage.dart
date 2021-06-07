@@ -9,6 +9,9 @@ List<String>? selectedCountList = [];
 List<dynamic> countList = [];
 List<Map<String, dynamic>> objList = [];
 var orderLines = <Map>[];
+var applied = false;
+int checkedIndex = 0;
+List<int> selectedIndexList = [];
 
 class SkillSetsPage extends StatefulWidget {
   @override
@@ -16,9 +19,10 @@ class SkillSetsPage extends StatefulWidget {
 }
 
 class _SkillSetsPageState extends State<SkillSetsPage> {
+  Color fillColor = Colors.transparent;
   @override
   Widget build(BuildContext context) {
-    void _openFilterDialog(listVal, title) async {
+    void _openFilterDialog(listVal, title, index) async {
       List<String> newList = [];
       // objList.add({
 
@@ -49,19 +53,29 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
       }, onApplyButtonClick: (list) {
         if (list != null) {
           //adds selected skills to
+
+          if (!selectedIndexList.contains(index)) {
+            selectedIndexList.add(index);
+          } else {
+            selectedIndexList.remove(index);
+          }
           setState(() {
             //list of selected skills
             // selectedCountList!.clear();
             selectedCountList = List.from(list);
-            
+            //fillColor = Colors.lightBlue;
             // selectedCountList!.forEach((element) {
 
             //   objList.map((e) => null)
             // });
             //change skill sets color
+            checkedIndex = index;
           });
-          
-          objList.add({'SkillSet': '$title', 'Skill': '${[selectedCountList]}'});
+          applied = true;
+          objList.add({
+            'SkillSet': '$title',
+            'Skill': '${[selectedCountList]}'
+          });
           orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
         }
         Navigator.pop(context);
@@ -95,6 +109,8 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                           mainAxisSpacing: 0),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
+                        bool checked = index == checkedIndex;
+                        fillColor = Colors.transparent;
                         DocumentSnapshot skills = snapshot.data!.docs[index];
                         // print(skills['Skills'].toString());
                         print(selectedCountList!.length);
@@ -102,7 +118,11 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                         return GestureDetector(
                           onTap: () {
                             _openFilterDialog(
-                                skills['Skills'], skills['SkillSet']);
+                                skills['Skills'], skills['SkillSet'], index);
+
+                            // setState(() {
+                            //   checkedIndex = index;
+                            // });
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(
@@ -115,6 +135,8 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(0.0),
                             child: Card(
+                              // color: checked ? Colors.orange : fillColor,
+                              color: selectedIndexList.contains(index) ? Colors.green : Colors.transparent,
                               shape: RoundedRectangleBorder(
                                 side:
                                     BorderSide(color: Colors.white70, width: 1),
