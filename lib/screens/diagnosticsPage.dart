@@ -105,10 +105,11 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                   Text('Not started',
                                       style: TextStyle(color: Colors.blueGrey)),
                                   SizedBox(width: 10.0),
-                                  // ElevatedButton.icon(
-                                  //     onPressed: () {},
-                                  //     icon: Icon(Icons.close),
-                                  //     label: Text('Stop'))
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                                      onPressed: () {},
+                                      icon: Icon(Icons.close),
+                                      label: Text('Cancel'))
                                 ],
                               ),
                             )),
