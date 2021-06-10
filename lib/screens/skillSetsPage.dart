@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
 import 'package:sankofa_sme_exec/screens/skill_sets.dart';
+import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
+import 'package:sankofa_sme_exec/widgets/custom_filter_list_dialog.dart';
 
 List<String>? selectedCountList = [];
 List<dynamic> countList = [];
@@ -12,6 +14,11 @@ var orderLines = <Map>[];
 var applied = false;
 int checkedIndex = 0;
 List<int> selectedIndexList = [];
+var selectedTrack = [];
+int count = 0;
+int li = 0;
+var outterList = [];
+var subSkill = [];
 
 class SkillSetsPage extends StatefulWidget {
   @override
@@ -23,6 +30,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
   @override
   Widget build(BuildContext context) {
     void _openFilterDialog(listVal, title, index) async {
+      var selectedCountListInner = [];
       List<String> newList = [];
       // objList.add({
 
@@ -31,7 +39,11 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
         newList.add(listVal[i]['Skill'].toString());
       }
       // selectedCountList!.clear();
-      await FilterListDialog.display<String>(context,
+      var len =
+          selectedCountList!.length; // before we add anything to selected count
+
+      print('first ${selectedCountList!.length}, len: $len');
+      await CustomFilterListDialog.display<String>(context,
           listData: newList,
           selectedListData: selectedCountList,
           height: 480,
@@ -63,6 +75,8 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //list of selected skills
             // selectedCountList!.clear();
             selectedCountList = List.from(list);
+            
+
             //fillColor = Colors.lightBlue;
             // selectedCountList!.forEach((element) {
 
@@ -71,13 +85,57 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //change skill sets color
             checkedIndex = index;
           });
+          subSkill.add({'title':'$title', 'count': selectedCountList!.length.toInt()});
+
+          selectedCountListInner.add(selectedCountList!.sublist(count));
           applied = true;
           objList.add({
             'SkillSet': '$title',
-            'Skill': '${[selectedCountList]}'
+            'Skill': '${[list]}'
           });
-          orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
+
+          // // orderLines.add({'SkillSet': '$title', 'Skill': list});
+          // selectedTrack.add(selectedCountList!.length);
+          
+          // print(selectedCountList!.getRange(
+          //         (selectedCountList!.length.toInt() - selectedTrack[count]).toInt(),
+          //         selectedCountList!.length.toInt()));
+
+          // if (orderLines.length > 0 ) {
+          //   print(selectedCountListInner);
+          //   print(selectedCountList!.length.toInt() - selectedTrack[count].toInt());
+          //   // print('list is ${selectedTrack[count-1]}, selected ${selectedCountList!.length}, count: $count, li is $li\n, start at ${(selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt()} ,sublist :${selectedCountList!.sublist(
+          //   //       (selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt())}');
+          //   // orderLines.add({
+          //   //   'SkillSet': '$title',
+          //   //   'Skill': selectedCountList!.sublist(
+          //   //       selectedCountList!.length.toInt() - li)
+          //   // });
+
+          //   orderLines.add({'SkillSet': '$title', 'Skill': outterList});
+          // } else {
+          // }
+
+            orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
+          // print(len);
+          // if (selectedCountList!.length == selectedTrack[0]) {
+          //   orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
+          // } else {
+
+          //   li = selectedCountList!.sublist(
+          //       (selectedCountList!.length - selectedTrack[count]).toInt(),
+          //       selectedCountList!.length);
+          //       print("list is $li");
+          //   orderLines.add({
+          //     'SkillSet': '$title',
+          //     'Skill': selectedCountList!.sublist(
+          //         (selectedCountList!.length - selectedTrack[count]).toInt(),
+          //         selectedCountList!.length)
+          //   });
+          // }
         }
+        // count++;
+        // li = selectedTrack[count-1];
         Navigator.pop(context);
       });
     }
@@ -136,7 +194,9 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                             padding: const EdgeInsets.all(0.0),
                             child: Card(
                               // color: checked ? Colors.orange : fillColor,
-                              color: selectedIndexList.contains(index) ? Colors.green : Colors.transparent,
+                              color: selectedIndexList.contains(index)
+                                  ? Colors.green
+                                  : Colors.transparent,
                               shape: RoundedRectangleBorder(
                                 side:
                                     BorderSide(color: Colors.white70, width: 1),
@@ -169,7 +229,11 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SelectedSkillsPage()),
+                                builder: (context) => TeamLeadMailPage()),
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => SelectedSkillsPage()),
                           );
                         },
                         child: Text(

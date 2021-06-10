@@ -53,7 +53,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                     style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
                                       onPressed: () {},
                                       icon: Icon(Icons.close),
-                                      label: Text('Stop'))
+                                      label: Text('Cancel'))
                                 ],
                               ),
                             )),

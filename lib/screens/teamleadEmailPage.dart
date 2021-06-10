@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/review_mailPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
+final List<Map<String, dynamic>> teamLeadMailList = [];
+
 //a class of teamLeaders List of objects
-class Leaders extends Object{
+class Leaders extends Object {
   String name;
   String email;
 
@@ -27,7 +30,6 @@ class TeamLeadMailPage extends StatefulWidget {
 }
 
 class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
-  final List<Map<String, dynamic >>teamLeadMailList = [];
   // final List teamLeadMailList =
   //     []; //will be the final mail list that is pushed to the db
   final _formKey = GlobalKey<FormState>();
@@ -102,6 +104,20 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                 ],
               ),
             ),
+            //mid container
+            // Flexible(
+            //     child: Column(
+            //   children: [
+            //     Text('Leaders nominated'),
+            //     SizedBox(height: 35.0),
+            //     ListView.builder(
+            //         itemCount: teamLeadMailList.length,
+            //         itemBuilder: (context, index) {
+            //           return Text(
+            //               '${teamLeadMailList[index]['name']}: ${teamLeadMailList[index]['email']} ');
+            //         })
+            //   ],
+            // )),
 
             //a start button and a button to enter another team lead email
             Flexible(
@@ -113,10 +129,11 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                     ElevatedButton.icon(
                       onPressed: () {
                         //add email to list
-                        
+
                         teamLeadMailList.add({
-                            'name': '${_nameController.text}',
-                            'email': '${_emailController.text}'});
+                          'name': '${_nameController.text}',
+                          'email': '${_emailController.text}'
+                        });
                         _emailController.clear(); //clears email field
                         _nameController.clear(); //clears name field
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -129,7 +146,6 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                     ElevatedButton(
                       onPressed: () {
                         if (teamLeadMailList.length > 0) {
-                          
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -140,8 +156,16 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {
-                                        email();
-                                      }, child: Text('Proceed')),
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ReviewMailPage()));
+                                         email();
+                                      },
+                                      child: Text('Proceed')),
+
                                   ElevatedButton(
                                       onPressed: () {
                                         Navigator.pop(context);
