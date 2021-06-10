@@ -93,9 +93,12 @@ import 'package:sankofa_sme_exec/widgets/custom_filter_list_widget.dart';
 /// ```
 
 class CustomFilterListDialog {
+  // CustomFilterListDialog({required })
   static Future display<T>(
     context, {
 
+
+      required String titleStr,
     /// Pass list containing all data which neeeds to filter.
     required List<T> listData,
 
@@ -321,7 +324,7 @@ class CustomFilterListDialog {
               unselectedTextbackGroundColor: unselectedTextbackGroundColor,
               wrapAlignment: wrapAlignment,
               wrapCrossAxisAlignment: wrapCrossAxisAlignment,
-              wrapSpacing: wrapSpacing,
+              wrapSpacing: wrapSpacing, title: titleStr,
             ),
           ),
         );
