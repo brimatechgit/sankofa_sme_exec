@@ -19,6 +19,7 @@ int count = 0;
 int li = 0;
 var outterList = [];
 var subSkill = [];
+var fillList = [];
 
 class SkillSetsPage extends StatefulWidget {
   @override
@@ -44,6 +45,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
 
       print('first ${selectedCountList!.length}, len: $len');
       await CustomFilterListDialog.display<String>(context,
+          titleStr: title,
           listData: newList,
           selectedListData: selectedCountList,
           height: 480,
@@ -75,7 +77,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //list of selected skills
             // selectedCountList!.clear();
             selectedCountList = List.from(list);
-            
 
             //fillColor = Colors.lightBlue;
             // selectedCountList!.forEach((element) {
@@ -85,9 +86,35 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //change skill sets color
             checkedIndex = index;
           });
-          subSkill.add({'title':'$title', 'count': selectedCountList!.length.toInt()});
+        //  fillList = selectedCountList!.toList();
+        //  if( count > 0){
+        //    fillList.clear();
+        //    fillList = selectedCountList!.toList();
+        //  }
+        //  for (var item in fillList) {
+           
+        //     print('card added');
+        //   widgetList.add(
+        //     Card(
+        //       child: ListTile(
+        //     title: Text(item + ' '),
+        //     subtitle: Text(title + ' testtt '),
+        //   )));
+        //  }
 
-          selectedCountListInner.add(selectedCountList!.sublist(count));
+        widgetList.add(
+            Card(
+              child: ListTile(
+            title: Text(selectedCountList.toString() + ' '),
+            subtitle: Text(title + ' testtt '),
+          )));
+          
+            subSkill.add({
+              'title': '$title',
+              'count': selectedCountList!.length.toInt()
+            });
+
+          // selectedCountListInner.add(selectedCountList!.sublist(count));
           applied = true;
           objList.add({
             'SkillSet': '$title',
@@ -96,7 +123,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
 
           // // orderLines.add({'SkillSet': '$title', 'Skill': list});
           // selectedTrack.add(selectedCountList!.length);
-          
+
           // print(selectedCountList!.getRange(
           //         (selectedCountList!.length.toInt() - selectedTrack[count]).toInt(),
           //         selectedCountList!.length.toInt()));
@@ -116,7 +143,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
           // } else {
           // }
 
-            orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
+          orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
           // print(len);
           // if (selectedCountList!.length == selectedTrack[0]) {
           //   orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
@@ -134,7 +161,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
           //   });
           // }
         }
-        // count++;
+        count++;
         // li = selectedTrack[count-1];
         Navigator.pop(context);
       });
@@ -226,14 +253,14 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TeamLeadMailPage()),
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
-                          //       builder: (context) => SelectedSkillsPage()),
+                          //       builder: (context) => TeamLeadMailPage()),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectedSkillsPage()),
                           );
                         },
                         child: Text(
