@@ -7,8 +7,6 @@ import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
 
-
-
 class LandingPage extends StatefulWidget {
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -20,6 +18,7 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        automaticallyImplyLeading: false,
       ),
       body: Column(children: [
         Expanded(
@@ -27,10 +26,8 @@ class _LandingPageState extends State<LandingPage> {
               width: double.infinity,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SkillSetsPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SkillSetsPage()));
                 },
                 child: Card(
                   child: Center(

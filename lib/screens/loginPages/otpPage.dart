@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
+import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 
@@ -52,7 +53,7 @@ class OtpPage extends StatelessWidget {
                 context, MaterialPageRoute(builder: (context) => RegistrationPage()));
           } else {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => DiagnosticsPage()));
+                context, MaterialPageRoute(builder: (context) => LandingPage()));
           }
 
 
