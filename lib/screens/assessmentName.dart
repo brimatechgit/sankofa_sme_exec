@@ -29,7 +29,7 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
           child: TextField(
             controller: controller,
             keyboardType: TextInputType.text,
-            obscureText: true,
+            obscureText: false,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -84,7 +84,7 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Name assessment')),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('Please name Diagnostic with memorable reference'),

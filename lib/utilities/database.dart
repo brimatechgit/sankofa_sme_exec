@@ -108,7 +108,8 @@ class Database {
     };
 
     Map<String, dynamic> diagData = <String, dynamic>{
-      "Reference": companyNameController.text,
+      "Company Name": companyNameController.text,
+      "Reference": diagnName,
       "Start Date": FieldValue.serverTimestamp(),
     };
 
