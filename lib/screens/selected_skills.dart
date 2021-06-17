@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
+import 'package:sankofa_sme_exec/utilities/database.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 List<Widget> widgetList = [];
@@ -475,10 +477,10 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     //add skills to created document in db here
+                                    await Database.addSkills(reference: companyNameController.text, );
 
-                                    
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
