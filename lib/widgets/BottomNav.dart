@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
+import 'package:sankofa_sme_exec/screens/learningPage.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
 
 class BottomNav extends StatelessWidget {
@@ -27,7 +28,12 @@ class BottomNav extends StatelessWidget {
           ),
           Expanded(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LearningPage()),
+                );
+              },
               child: Text('Learning'),
             ),
           ),

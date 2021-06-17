@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/assessmentName.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
@@ -6,8 +7,6 @@ import 'package:sankofa_sme_exec/screens/skill_sets.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
-
-
 
 class LandingPage extends StatefulWidget {
   @override
@@ -20,6 +19,7 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        automaticallyImplyLeading: false,
       ),
       body: Column(children: [
         Expanded(
@@ -27,15 +27,13 @@ class _LandingPageState extends State<LandingPage> {
               width: double.infinity,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SkillSetsPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AssessmNamePage()));
                 },
                 child: Card(
                   child: Center(
                       child: Text(
-                    'NEW ASSESSMENT',
+                    'NEW DIAGNOSTIC',
                     style: TextStyle(fontSize: 25.5, letterSpacing: 1.2),
                   )),
                 ),

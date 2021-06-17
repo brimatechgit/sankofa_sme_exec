@@ -33,9 +33,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
     void _openFilterDialog(listVal, title, index) async {
       var selectedCountListInner = [];
       List<String> newList = [];
-      // objList.add({
-
-      // });
       for (var i = 0; i < listVal.length; i++) {
         newList.add(listVal[i]['Skill'].toString());
       }
