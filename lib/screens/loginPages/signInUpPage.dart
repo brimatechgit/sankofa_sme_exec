@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signInPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 
+
+
+//first page all users get tp
 class SignInUpPage extends StatelessWidget {
   const SignInUpPage({Key? key}) : super(key: key);
 

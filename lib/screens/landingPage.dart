@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/assessmentName.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
@@ -27,12 +28,12 @@ class _LandingPageState extends State<LandingPage> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SkillSetsPage()));
+                      MaterialPageRoute(builder: (context) => AssessmNamePage()));
                 },
                 child: Card(
                   child: Center(
                       child: Text(
-                    'NEW ASSESSMENT',
+                    'NEW DIAGNOSTIC',
                     style: TextStyle(fontSize: 25.5, letterSpacing: 1.2),
                   )),
                 ),

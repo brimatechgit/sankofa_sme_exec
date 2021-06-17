@@ -476,6 +476,9 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green),
                                   onPressed: () {
+                                    //add skills to created document in db here
+
+                                    
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

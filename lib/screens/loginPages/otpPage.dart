@@ -5,6 +5,8 @@ import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 
+
+//get user otp to verify they exist
 class OtpPage extends StatelessWidget {
   final String fromPage;
   const OtpPage({Key? key, required this.fromPage}) : super(key: key);
@@ -47,8 +49,9 @@ class OtpPage extends StatelessWidget {
       child: ElevatedButton(
         
         onPressed: () {
-
+          //different routing for different pages
           if(this.fromPage == 'signUp'){
+
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => RegistrationPage()));
           } else {
