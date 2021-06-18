@@ -47,6 +47,7 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
           child: Column(children: [
             Flexible(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Please nominate team leader(s)',
@@ -162,7 +163,7 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ReviewMailPage()));
-                                         email();
+                                        //  email();
                                       },
                                       child: Text('Proceed')),
 

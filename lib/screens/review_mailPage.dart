@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/assessmentName.dart';
+import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
+import 'package:sankofa_sme_exec/utilities/database.dart';
 
 //final page, reviews teamlead emails
 //submits to db here?
@@ -58,15 +61,16 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
             child: Padding(
               padding: const EdgeInsets.all(25.0),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AssessmNamePage()));
+                          builder: (context) => DiagnosticsPage()));
 
                   //add the teamleade to document, with the user's role
+                  await Database.addTeamLeaders(reference: companyNameController.text, );
                 },
-                child: Text('Name Assessment'),
+                child: Text('Finalise'),
               ),
             ))
       ]),

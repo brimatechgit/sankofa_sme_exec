@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
@@ -59,6 +60,7 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
           await Database.addDiagnostic(
             diagnName: _assessNameController.text,
             email: emailController.text,
+            reference: companyNameController.text,
           );
 
           Navigator.push(context,

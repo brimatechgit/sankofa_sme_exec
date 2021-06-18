@@ -4,6 +4,8 @@ import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
 
+
+final companyNameController = TextEditingController();
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
 
@@ -12,7 +14,7 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final _companyNameController = TextEditingController();
+  
   final _pSectorController = TextEditingController();
   final _secSectorController = TextEditingController();
   @override
@@ -33,7 +35,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 decoration: kBoxDecorationStyle,
                 height: 60.0,
                 child: TextField(
-                  controller: _companyNameController,
+                  controller: companyNameController,
                   keyboardType: TextInputType.text,
                   style: TextStyle(
                     color: Colors.white,
@@ -145,7 +147,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           child: Text('Submit'),
                           onPressed: () async {
                             await Database.updateRegiForm(
-                              companyName: _companyNameController.text,
+                              companyName: companyNameController.text,
                               primarySec: _pSectorController.text,
                               secondarySec: _secSectorController.text,
                               email: emailController.text,
