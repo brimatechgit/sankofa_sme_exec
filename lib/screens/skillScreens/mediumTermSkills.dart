@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
+import 'package:sankofa_sme_exec/screens/skillScreens/medTerm_skills_review.dart';
+import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/skill_sets.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
@@ -7,27 +9,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:sankofa_sme_exec/widgets/custom_filter_list_dialog.dart';
 
-List<String>? selectedCountList = [];
-List<dynamic> countList = [];
-List<Map<String, dynamic>> objList = [];
-var orderLines = <Map>[];
-var applied = false;
-int checkedIndex = 0;
-List<int> selectedIndexList = [];
-var selectedTrack = [];
-int count = 0;
-int li = 0;
-var outterList = [];
-var subSkill = [];
-var fillList = [];
+// List<String>? selectedMidTermSkillList = [];
+// List<dynamic> countList = [];
+// List<Map<String, dynamic>> objList = [];
+// var orderLines = <Map>[];
+// var applied = false;
+// int checkedIndex = 0;
+// List<int> selectedIndexList = [];
+// var selectedTrack = [];
+// int count = 0;
+// int li = 0;
+var midTermList = [];
+// var subSkill = [];
+// var fillList = [];
+  List<String>? selectedMidTermSkillList = [];
 
-class SkillSetsPage extends StatefulWidget {
+class MediumTermSkillsPage extends StatefulWidget {
   @override
-  _SkillSetsPageState createState() => _SkillSetsPageState();
+  _MediumTermSkillsPageState createState() => _MediumTermSkillsPageState();
 }
 
-class _SkillSetsPageState extends State<SkillSetsPage> {
+class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
   Color fillColor = Colors.transparent;
+
+  List<int> selectedIndexList = [];
+  int checkedIndex = 0;
   @override
   Widget build(BuildContext context) {
     void _openFilterDialog(listVal, title, index) async {
@@ -36,16 +42,16 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
       for (var i = 0; i < listVal.length; i++) {
         newList.add(listVal[i]['Skill'].toString());
       }
-      // selectedCountList!.clear();
+      // selectedMidTermSkillList!.clear();
       var len =
-          selectedCountList!.length; // before we add anything to selected count
+          selectedMidTermSkillList!.length; // before we add anything to selected count
 
-      print('first ${selectedCountList!.length}, len: $len');
+      print('first ${selectedMidTermSkillList!.length}, len: $len');
       await CustomFilterListDialog.display<String>(context,
-          locationData: 'short term',
+          locationData: 'medium term',
           titleStr: title,
           listData: newList,
-          selectedListData: selectedCountList,
+          selectedListData: selectedMidTermSkillList,
           height: 480,
           headlineText: title,
           searchFieldHintText: "Search Here", choiceChipLabel: (item) {
@@ -73,94 +79,19 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
           }
           setState(() {
             //list of selected skills
-            // selectedCountList!.clear();
-            selectedCountList = List.from(list);
+            selectedMidTermSkillList = List.from(list);
 
-            //fillColor = Colors.lightBlue;
-            // selectedCountList!.forEach((element) {
-
-            //   objList.map((e) => null)
-            // });
+            
             //change skill sets color
             checkedIndex = index;
           });
-        //  fillList = selectedCountList!.toList();
-        //  if( count > 0){
-        //    fillList.clear();
-        //    fillList = selectedCountList!.toList();
-        //  }
-        //  for (var item in fillList) {
-           
-        //     print('card added');
-        //   widgetList.add(
-        //     Card(
-        //       child: ListTile(
-        //     title: Text(item + ' '),
-        //     subtitle: Text(title + ' testtt '),
-        //   )));
-        //  }
 
-        widgetList.add(
-            Card(
-              child: ListTile(
-            title: Text(selectedCountList.toString() + ' '),
-            subtitle: Text(title + ' testtt '),
-          )));
-          
-            subSkill.add({
-              'title': '$title',
-              'count': selectedCountList!.length.toInt()
-            });
+        
 
-          // selectedCountListInner.add(selectedCountList!.sublist(count));
-          applied = true;
-          objList.add({
-            'SkillSet': '$title',
-            'Skill': '${[list]}'
-          });
+        
 
-          // // orderLines.add({'SkillSet': '$title', 'Skill': list});
-          // selectedTrack.add(selectedCountList!.length);
-
-          // print(selectedCountList!.getRange(
-          //         (selectedCountList!.length.toInt() - selectedTrack[count]).toInt(),
-          //         selectedCountList!.length.toInt()));
-
-          // if (orderLines.length > 0 ) {
-          //   print(selectedCountListInner);
-          //   print(selectedCountList!.length.toInt() - selectedTrack[count].toInt());
-          //   // print('list is ${selectedTrack[count-1]}, selected ${selectedCountList!.length}, count: $count, li is $li\n, start at ${(selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt()} ,sublist :${selectedCountList!.sublist(
-          //   //       (selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt())}');
-          //   // orderLines.add({
-          //   //   'SkillSet': '$title',
-          //   //   'Skill': selectedCountList!.sublist(
-          //   //       selectedCountList!.length.toInt() - li)
-          //   // });
-
-          //   orderLines.add({'SkillSet': '$title', 'Skill': outterList});
-          // } else {
-          // }
-
-          orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
-          // print(len);
-          // if (selectedCountList!.length == selectedTrack[0]) {
-          //   orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
-          // } else {
-
-          //   li = selectedCountList!.sublist(
-          //       (selectedCountList!.length - selectedTrack[count]).toInt(),
-          //       selectedCountList!.length);
-          //       print("list is $li");
-          //   orderLines.add({
-          //     'SkillSet': '$title',
-          //     'Skill': selectedCountList!.sublist(
-          //         (selectedCountList!.length - selectedTrack[count]).toInt(),
-          //         selectedCountList!.length)
-          //   });
-          // }
+         
         }
-        count++;
-        // li = selectedTrack[count-1];
         Navigator.pop(context);
       });
     }
@@ -172,7 +103,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
 
       body: Column(
         children: [
-          Text('Please Select 3 or more company related short term skills'),
+          Text('Please Select 3 or more company related medium term skills'),
           Flexible(
             child: StreamBuilder(
                 stream:
@@ -196,7 +127,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                         fillColor = Colors.transparent;
                         DocumentSnapshot skills = snapshot.data!.docs[index];
                         // print(skills['Skills'].toString());
-                        print(selectedCountList!.length);
+                        print(selectedMidTermSkillList!.length);
                         //countList.add(skills['Skills'][index]['Skill']);
                         return GestureDetector(
                           onTap: () {
@@ -258,11 +189,11 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SelectedSkillsPage()),
+                                builder: (context) => SelectedMediumSkillsPage(totalSkills: selectedMidTermSkillList!,)),
                           );
                         },
                         child: Text(
-                            'Review Skills (${selectedCountList!.length})'),
+                            'Review Skills (${selectedMidTermSkillList!.length})'),
                       ),
                     ),
                   ),
@@ -308,17 +239,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
               ))
         ],
       ),
-      // body: StreamBuilder(
-      //   stream: FirebaseFirestore.instance.collection('Skills').snapshots(),
-      //   builder: (context, snapshot){
-      //     return ListView.builder(
-      //       itemCount: snapshot.data!.documents.length,
-      //       itemBuilder: (context, index){
-
-      //     })
-      //   }
-      // ),
-      // bottomNavigationBar: BottomNav(),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
 
+
+final assessNameController = TextEditingController();
 class AssessmNamePage extends StatefulWidget {
   const AssessmNamePage({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class AssessmNamePage extends StatefulWidget {
 }
 
 class _AssessmNamePageState extends State<AssessmNamePage> {
-  final _assessNameController = TextEditingController();
+ 
   final _privateRefController = TextEditingController();
   final _publicRefController = TextEditingController();
 
@@ -58,7 +60,7 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
           //push to skills page
           //create diagnostic in db
           await Database.addDiagnostic(
-            diagnName: _assessNameController.text,
+            diagnName: assessNameController.text,
             email: emailController.text,
             reference: companyNameController.text,
           );
@@ -105,7 +107,7 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
             SizedBox(
               height: 12.0,
             ),
-            _buildOTP('Finance', _assessNameController),
+            _buildOTP('Finance', assessNameController),
             Text('Please enter Private Reference'),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(

@@ -68,7 +68,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
                           builder: (context) => DiagnosticsPage()));
 
                   //add the teamleade to document, with the user's role
-                  await Database.addTeamLeaders(reference: companyNameController.text, );
+                  await Database.addTeamLeaders(compName: companyNameController.text, );
                 },
                 child: Text('Finalise'),
               ),

@@ -97,7 +97,7 @@ class CustomFilterListDialog {
   static Future display<T>(
     context, {
 
-
+      required String locationData, 
       required String titleStr,
     /// Pass list containing all data which neeeds to filter.
     required List<T> listData,
@@ -283,6 +283,7 @@ class CustomFilterListDialog {
             width: width,
             color: Colors.transparent,
             child: FilterListWidget(
+              location: locationData,
               listData: listData,
               choiceChipLabel: choiceChipLabel,
               width: width,
