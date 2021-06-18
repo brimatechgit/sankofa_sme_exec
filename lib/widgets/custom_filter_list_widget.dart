@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/widgets/choice_chip_widget.dart';
 import 'package:sankofa_sme_exec/widgets/search_field.dart';
@@ -56,6 +57,7 @@ typedef ValidateRemoveItem<T> = List<T> Function(List<T>? list, T item);
 class FilterListWidget<T> extends StatefulWidget {
   const FilterListWidget({
     required this.title,
+    required this.location,
     Key? key,
     this.height,
     this.width,
@@ -114,6 +116,8 @@ class FilterListWidget<T> extends StatefulWidget {
   final double? width;
   final double borderRadius;
   final String title;
+  final String location;
+  
 
   /// Pass list containing all data which neeeds to filter
   final List<T>? listData;
@@ -410,7 +414,7 @@ class _FilterListWidgetState<T> extends State<FilterListWidget<T>> {
                       }
                     } else {
                       //edit here
-                      outterList.add({'skill': item.toString(), 'title': widget.title});
+                      (widget.location == 'short term') ? outterList.add({'skill': item.toString(), 'title': widget.title}) : midTermList.add({'skill': item.toString(), 'title': widget.title});
                       // outterList.add(item);
                       //---adds to global list
                       // _selectedListData.add({'skill': item.toString(), 'title': title});

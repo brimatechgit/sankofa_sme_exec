@@ -9,12 +9,16 @@ import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 List<Widget> widgetList = [];
 
-class SelectedSkillsPage extends StatefulWidget {
+class SelectedMediumSkillsPage extends StatefulWidget {
+  var totalSkills;
+  SelectedMediumSkillsPage({required this.totalSkills});
   @override
-  _SelectedSkillsPageState createState() => _SelectedSkillsPageState();
+  _SelectedMediumSkillsPageState createState() => _SelectedMediumSkillsPageState();
 }
 
-class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
+class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +32,12 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
           Flexible(
               flex: 0,
               child:
-                  Text('Total skills selected ${selectedCountList!.length}')),
+                  Text('Total skills selected ${this.widget.totalSkills!.length}')),
 
         Flexible(
           flex: 2,
           child: ListView.builder(
-              itemCount: selectedCountList!.length,
+              itemCount: this.widget.totalSkills!.length,
               itemBuilder: (context, index) {
                 print('Whole list $selectedCountList');
                 return Card(
@@ -43,8 +47,8 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                   ),
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(outterList[index]['skill'].toString()),
-                    subtitle: Text(outterList[index]['title'].toString()),
+                    title: Text(midTermList[index]['skill'].toString()),
+                    subtitle: Text(midTermList[index]['title'].toString()),
                   ),
                 );
               }),
@@ -67,14 +71,14 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                 SizedBox(width: 15.0),
                 ElevatedButton(
                   onPressed: () {
-                    if (selectedCountList!.length > 0) {
+                    if (this.widget.totalSkills!.length > 0) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Notice"),
                             content: Text(
-                                "Please note, selected short term skillsets cannot be changed once submitted!"),
+                                "Please note, selected medium term skillsets cannot be changed once submitted!"),
                             actions: [
                               ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
@@ -90,13 +94,13 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                                       primary: Colors.green),
                                   onPressed: () async {
                                     //add skills to created document in db here
-                                    await Database.addSkills(compName: companyNameController.text, location: 'short term', diagnName: assessNameController.text);
+                                    await Database.addSkills(compName: companyNameController.text, location: 'mid term', diagnName: assessNameController.text);
 
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                MediumTermSkillsPage()));
+                                                TeamLeadMailPage()));
                                   },
                                   child: Text('Proceed')),
                               SizedBox(width: 65.0),
