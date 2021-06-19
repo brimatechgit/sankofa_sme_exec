@@ -11,6 +11,7 @@ final CollectionReference _diagCollection =
 
 
 var currId = '';
+var userID;
 
 class Database {
   // static String? userUid;
@@ -35,6 +36,8 @@ class Database {
         .set(data)
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
+
+        userID = documentReferencer.id;
   }
 
   //create collection in the relevent diagnostic
@@ -117,7 +120,7 @@ class Database {
           .whenComplete(() => print("Note item added to the database"))
           .catchError((e) => print(e));
 
-      teamLeadMailList.clear();
+     
     }
 
     
@@ -130,6 +133,8 @@ class Database {
     //     .set(data)
     //     .whenComplete(() => print("Note item added to the database"))
     //     .catchError((e) => print(e));
+
+     teamLeadMailList.clear();
   }
 
   //creates a diagnostic in user collection and diagnostic collection
@@ -141,7 +146,7 @@ class Database {
   }) async {
     // var updateDiag = _mainCollection.doc();
     DocumentReference documentReferencer =
-        _mainCollection.doc(email).collection('Diagnostics').doc(diagnName);
+        _mainCollection.doc(userID).collection('Diagnostics').doc(diagnName);
 
     DocumentReference documentReferencerDiag = _diagCollection.doc();
 
@@ -160,6 +165,11 @@ class Database {
         .set(data)
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
+
+    // _firestore.collection('Users')
+    FirebaseFirestore.instance.collection('Users').doc(userID).update({
+      "Company": companyNameController.text,
+    });
 
     await documentReferencerDiag
         .set(diagData)
