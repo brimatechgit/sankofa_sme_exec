@@ -8,7 +8,8 @@ import 'package:sankofa_sme_exec/utilities/database.dart';
 //final page, reviews teamlead emails
 //submits to db here?
 class ReviewMailPage extends StatefulWidget {
-  const ReviewMailPage({Key? key}) : super(key: key);
+  final docID;
+  const ReviewMailPage({Key? key, this.docID}) : super(key: key);
 
   @override
   _ReviewMailPageState createState() => _ReviewMailPageState();
@@ -65,7 +66,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DiagnosticsPage()));
+                          builder: (context) => DiagnosticsPage(docID: this.widget.docID,)));
 
                   //add the teamleade to document, with the user's role
                   await Database.addTeamLeaders(compName: companyNameController.text, );

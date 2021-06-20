@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
 
 class LandingPage extends StatefulWidget {
+  final docID;
+  LandingPage({this.docID});
   @override
   _LandingPageState createState() => _LandingPageState();
 }
@@ -47,7 +49,7 @@ class _LandingPageState extends State<LandingPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DiagnosticsPage()));
+                          builder: (context) => DiagnosticsPage(docID: this.widget.docID,)));
                 },
                 child: Card(
                   child: Center(

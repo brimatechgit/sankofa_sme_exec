@@ -9,7 +9,10 @@ import 'package:sankofa_sme_exec/utilities/constants.dart';
 //get user otp to verify they exist
 class OtpPage extends StatelessWidget {
   final String fromPage;
-  const OtpPage({Key? key, required this.fromPage}) : super(key: key);
+  
+  final userList;
+  final documentID;
+  const OtpPage({Key? key, required this.fromPage, required this.documentID, required this.userList}) : super(key: key);
 
   Widget _buildOTP() {
     return Column(
@@ -55,8 +58,10 @@ class OtpPage extends StatelessWidget {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => RegistrationPage()));
           } else {
+
+            //check if 
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LandingPage()));
+                context, MaterialPageRoute(builder: (context) => LandingPage(docID: documentID,)));
           }
 
 
