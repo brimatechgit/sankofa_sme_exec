@@ -6,7 +6,7 @@ import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
 
 
-final assessNameController = TextEditingController();
+final assessNameController = TextEditingController();   // would be a public ref
 class AssessmNamePage extends StatefulWidget {
   const AssessmNamePage({Key? key}) : super(key: key);
 
@@ -88,8 +88,10 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
       appBar: AppBar(title: Text('Name assessment')),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Please name Diagnostic with memorable reference'),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text('Please name Diagnostic with memorable a reference'),
             SizedBox(
               height: 12.0,
             ),
@@ -107,6 +109,19 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
             SizedBox(
               height: 12.0,
             ),
+
+            Text('Please enter Public Reference'),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(
+                Icons.info,
+                color: Colors.blueGrey,
+                size: 12.0,
+              ),
+              Text(
+                'Visible to every participant',
+                style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
+              )
+            ]),
             _buildOTP('Finance', assessNameController),
             Text('Please enter Private Reference'),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -122,22 +137,22 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
               height: 12.0,
             ),
             _buildOTP('Private ref', _privateRefController),
-            Text('Please enter Public Reference'),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
-                Icons.info,
-                color: Colors.blueGrey,
-                size: 12.0,
-              ),
-              Text(
-                'Visible to every participant',
-                style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
-              )
-            ]),
-            SizedBox(
-              height: 12.0,
-            ),
-            _buildOTP('Public ref', _publicRefController),
+            // Text('Please enter Public Reference'),
+            // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            //   Icon(
+            //     Icons.info,
+            //     color: Colors.blueGrey,
+            //     size: 12.0,
+            //   ),
+            //   Text(
+            //     'Visible to every participant',
+            //     style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
+            //   )
+            // ]),
+            // SizedBox(
+            //   height: 12.0,
+            // ),
+            // _buildOTP('Public ref', _publicRefController),
             _buildLoginBtn(context),
           ]),
         ),

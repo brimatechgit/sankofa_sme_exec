@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/assessmentName.dart';
+import 'package:sankofa_sme_exec/screens/diagnosisGraphsPage.dart';
 import 'package:sankofa_sme_exec/screens/diagnosisPathPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
@@ -57,10 +58,16 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                         //countList.add(skills['Skills'][index]['Skill']);
                         return GestureDetector(
                         onTap: () {
+                          //should navigate to graph page
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DiagnosisPathPage()));
+                                  builder: (context) => DiagnosisGraphPage()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => DiagnosisPathPage()));
                         },
                         child: Card(
                             margin: EdgeInsets.all(12.0),

@@ -1,19 +1,28 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 
-
 //get user otp to verify they exist
-class OtpPage extends StatelessWidget {
+class OtpPage extends StatefulWidget {
   final String fromPage;
-  
+
   final userList;
   final documentID;
-  const OtpPage({Key? key, required this.fromPage, required this.documentID, required this.userList}) : super(key: key);
+  const OtpPage(
+      {Key? key,
+      required this.fromPage,
+      required this.documentID,
+      required this.userList})
+      : super(key: key);
 
+  @override
+  _OtpPageState createState() => _OtpPageState();
+}
+
+class _OtpPageState extends State<OtpPage> {
   Widget _buildOTP() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,22 +57,34 @@ class OtpPage extends StatelessWidget {
   Widget _buildLoginBtn(context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
-      
       child: ElevatedButton(
-        
         onPressed: () {
           //different routing for different pages
-          if(this.fromPage == 'signUp'){
+          if (this.widget.fromPage == 'signUp') {
+            FirebaseFirestore.instance
+                .collection("Sectors")
+                .get()
+                .then((querySnapshot) {
+              querySnapshot.docs.forEach((result) {
+                setState(() {
+                  sectors.add(result.get('Sector'));
+                });
+              });
+            });
+print(sectors);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RegistrationPage()));
 
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+            print(sectors);
           } else {
-
-            //check if 
+            //check if
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LandingPage(docID: documentID,)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LandingPage(
+                          docID: widget.documentID,
+                        )));
           }
-
 
           // if (this.widget.from == "login") {
           //   VerifyOPT();

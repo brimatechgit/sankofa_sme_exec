@@ -40,6 +40,13 @@ class Database {
         userID = documentReferencer.id;
   }
 
+  //  static Future<void> getSectors({
+  //    required 
+  //  }) async {
+
+  //  } 
+
+
   //create collection in the relevent diagnostic
   //add the user skills selected
   static Future<void> addSkills({
