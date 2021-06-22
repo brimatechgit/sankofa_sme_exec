@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/otpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
+import 'package:sankofa_sme_exec/utilities/database.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -24,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
           child: TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            obscureText: true,
+            obscureText: false,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -50,12 +53,64 @@ class _SignInPageState extends State<SignInPage> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => OtpPage(
-                        fromPage: 'signIn',
-                      )));
+          
+          //validate email
+          //check user in db
+          if (EmailValidator.validate(_emailController.text)) {
+            
+
+
+            FirebaseFirestore.instance
+                .collection("Users").where("email", isEqualTo: _emailController.text)
+                .get()
+                .then((querySnapshot) {
+              querySnapshot.docs.forEach((result) {
+                userID = result.id;
+                
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OtpPage(
+                                  userList: result.data(),
+                                  documentID: result.id,
+                                  
+                                  fromPage: 'signIn',
+                                )));
+                  //.then((value) => showDialog(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return AlertDialog(
+                //       title: Text("Notice"),
+                //       content: Text("No email found, please re-enter"),
+                //       actions: [],
+                //     );
+                //   },
+                // ));
+
+                // if(resul)
+                // print('${result.data()}, ${result.id}');
+              });
+            });
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Notice"),
+                  content: Text("Invalid email entered"),
+                  actions: [],
+                );
+              },
+            );
+          }
+
+
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => OtpPage(
+          //               fromPage: 'signIn',
+          //             )));
         },
         child: Text(
           'Get OTP',

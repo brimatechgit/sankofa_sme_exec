@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/assessmentName.dart';
+import 'package:sankofa_sme_exec/screens/diagnosisGraphsPage.dart';
 import 'package:sankofa_sme_exec/screens/diagnosisPathPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 class DiagnosticsPage extends StatefulWidget {
-  const DiagnosticsPage({Key? key}) : super(key: key);
+  final docID;
+  const DiagnosticsPage({Key? key, required this.docID}) : super(key: key);
 
   @override
   _DiagnosticsPageState createState() => _DiagnosticsPageState();
@@ -35,7 +38,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
 
                       Flexible(child: StreamBuilder(
                 stream:
-                    FirebaseFirestore.instance.collection('Users').doc(emailController.text).collection('Diagnostics').snapshots(), //has to be a collection
+                    FirebaseFirestore.instance.collection('Users').doc(this.widget.docID).collection('Diagnostics').snapshots(), //has to be a collection
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
@@ -55,10 +58,16 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                         //countList.add(skills['Skills'][index]['Skill']);
                         return GestureDetector(
                         onTap: () {
+                          //should navigate to graph page
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DiagnosisPathPage()));
+                                  builder: (context) => DiagnosisGraphPage()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => DiagnosisPathPage()));
                         },
                         child: Card(
                             margin: EdgeInsets.all(12.0),
@@ -176,17 +185,19 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
               //     flex: 1,
               //     child: Container(
               //         child: Text('Currently no diagnostics running!'))),
-              // Flexible(
-              //     flex: 0,
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) => DiagnosisPathPage()));
-              //       },
-              //       child: Text('Diagnosis'),
-              //     ))
+              Flexible(
+                  flex: 0,
+                  child: ElevatedButton.icon(
+                    icon: Icon(Icons.add),
+                    label: Text('Create New Diagnostic'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AssessmNamePage()));
+                    },
+                    // child: Text('Diagnosis'),
+                  ))
             ]),
       ),
     );

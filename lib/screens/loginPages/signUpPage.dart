@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => OtpPage(
-                            fromPage: 'signUp',
+                            fromPage: 'signUp', documentID: null, userList: null,
                           )));
             } else {
               showDialog(
