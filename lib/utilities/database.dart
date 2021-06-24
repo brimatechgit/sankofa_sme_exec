@@ -120,6 +120,7 @@ class Database {
         "Email": teamLeadMailList[i]['email'].toString(),
         "Self Assessment Result Medium Term": '',
         "Role": 'Team Lead',
+        "Self Assessment Status" : "TO-DO"
       };
 
       await documentReferencerDiag
