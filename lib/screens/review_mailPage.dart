@@ -66,7 +66,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DiagnosticsPage(docID: this.widget.docID,)));
+                          builder: (context) => DiagnosticsPage(docID: userID,)));
 
                   //add the teamleade to document, with the user's role
                   await Database.addTeamLeaders(compName: companyNameController.text, );
