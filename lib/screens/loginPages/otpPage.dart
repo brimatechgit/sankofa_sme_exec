@@ -66,24 +66,30 @@ class _OtpPageState extends State<OtpPage> {
                 .get()
                 .then((querySnapshot) {
               querySnapshot.docs.forEach((result) {
+                //should add to the list immediately
                 setState(() {
                   sectors.add(result.get('Sector'));
                 });
               });
             });
-print(sectors);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => RegistrationPage()));
+            print(sectors);
+
+//push to register only when sectoprs are filled?
+            if (sectors.isNotEmpty)
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegistrationPage()));
 
             print(sectors);
           } else {
             //check if
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LandingPage(
-                          docID: widget.documentID,
-                        )));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => LandingPage(
+            //               docID: widget.documentID,
+            //             )));
+
+            Navigator.pushReplacementNamed(context, "/DiagnosticPage");
           }
 
           // if (this.widget.from == "login") {

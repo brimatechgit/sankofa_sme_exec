@@ -149,9 +149,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       underline: SizedBox(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          secSectordropdownValue = newValue!;
+                          // secSectordropdownValue = newValue!;
                           this.setState(() {
-                            
+                            secSectordropdownValue = newValue!;
                           });
                         });
                       },

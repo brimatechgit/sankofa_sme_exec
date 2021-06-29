@@ -120,6 +120,7 @@ class Database {
         "Email": teamLeadMailList[i]['email'].toString(),
         "Self Assessment Result Medium Term": '',
         "Role": 'Team Lead',
+        "Self Assessment Status" : "TO-DO"
       };
 
       await documentReferencerDiag
@@ -186,25 +187,29 @@ class Database {
         currId = documentReferencerDiag.id;
   }
 
+
+  //updates form w/ company name and sectors
   static Future<void> updateRegiForm({
     required String companyName,
     required String primarySec,
     required String secondarySec,
     required String email,
   }) async {
-    DocumentReference documentReferencer = _mainCollection.doc(email);
+    DocumentReference documentReferencer = _mainCollection.doc(userID);
 
     //check if fields are empty or not, to avoid adding empty fields to db
-    Map<String, dynamic> data = <String, dynamic>{
+    documentReferencer.update({
       "Company": companyName,
-      "Primary Sector": primarySec,
-      "Secondary Sector": secondarySec,
-    };
+      "Primary Sector": priSectordropdownValue,
+      "Secondary Sector": secSectordropdownValue,
+    });
 
-    await documentReferencer
-        .update(data)
-        .whenComplete(() => print("Note item updated in the database"))
-        .catchError((e) => print(e));
+    print(priSectordropdownValue);
+
+    // await documentReferencer
+    //     .update(data)
+    //     .whenComplete(() => print("Note item updated in the database"))
+    //     .catchError((e) => print(e));
   }
 
   // static Stream<QuerySnapshot> readItems() {
