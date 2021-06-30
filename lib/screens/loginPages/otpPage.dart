@@ -89,6 +89,8 @@ class _OtpPageState extends State<OtpPage> {
             //               docID: widget.documentID,
             //             )));
 
+
+            //should remove all pages in state, user cannot go back to prev page
             Navigator.pushReplacementNamed(context, "/DiagnosticPage");
           }
 
