@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/otpPage.dart';
@@ -52,12 +53,13 @@ class _SignInPageState extends State<SignInPage> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           
           //validate email
           //check user in db
           if (EmailValidator.validate(_emailController.text)) {
-            
+                 EmailAuth.sessionName = "Test Session";
+  var res = await EmailAuth.sendOtp(receiverMail: _emailController.text); 
 
 
             FirebaseFirestore.instance
@@ -67,15 +69,19 @@ class _SignInPageState extends State<SignInPage> {
               querySnapshot.docs.forEach((result) {
                 userID = result.id;
                 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpPage(
-                                  userList: result.data(),
-                                  documentID: result.id,
-                                  
-                                  fromPage: 'signIn',
-                                )));
+
+                  //should send otp to user
+                    if (res) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpPage(
+                                    userList: result.data(),
+                                    documentID: result.id,
+                                    emailC: _emailController.text,
+                                    fromPage: 'signIn',
+                                  )));
+                    }
                   //.then((value) => showDialog(
                 //   context: context,
                 //   builder: (BuildContext context) {

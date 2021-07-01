@@ -32,6 +32,7 @@ dependencies:
   filter_list: ^1.0.0
   mailer: ^5.0.0
   email_validator: ^2.0.1
+  email_auth: ^0.0.1+4
   
 
 dev_dependencies:
