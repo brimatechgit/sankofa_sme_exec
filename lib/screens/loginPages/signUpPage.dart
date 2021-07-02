@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
@@ -6,7 +7,7 @@ import 'package:sankofa_sme_exec/utilities/database.dart';
 
 import 'otpPage.dart';
 
-
+ final nameController = TextEditingController();
  final emailController = TextEditingController();
 
 class SignUpPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
  
 
-  final _nameController = TextEditingController();
+ 
 
   // Future<void> addItem({
   //   required String fName,
@@ -54,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
             decoration: kBoxDecorationStyle,
             height: 60.0,
             child: TextField(
-              controller: _nameController,
+              controller: nameController,
               keyboardType: TextInputType.text,
               style: TextStyle(
                 color: Colors.white,
@@ -109,15 +110,19 @@ class _SignUpPageState extends State<SignUpPage> {
             //should check if email exists or not
 
             if (EmailValidator.validate(emailController.text)) {
-               await Database.addItem(
-                  fName: _nameController.text, email: emailController.text);
+              //send otp
+              EmailAuth.sessionName = "Test Session";
+  var res = await EmailAuth.sendOtp(receiverMail: emailController.text); 
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OtpPage(
-                            fromPage: 'signUp', documentID: null, userList: null,
-                          )));
+              if (res) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpPage(
+                          emailC: emailController.text,
+                              fromPage: 'signUp', documentID: null, userList: null,
+                            )));
+              }
             } else {
               showDialog(
                 context: context,

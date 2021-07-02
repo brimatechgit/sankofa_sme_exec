@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
 import 'package:sankofa_sme_exec/screens/skill_sets.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
@@ -202,18 +203,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                           onTap: () {
                             _openFilterDialog(
                                 skills['Skills'], skills['SkillSet'], index);
-
-                            // setState(() {
-                            //   checkedIndex = index;
-                            // });
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => SkillSetsPage(
-                            //             title: skills['SkillSet'],
-                            //             skillSets: skills['Skills'],
-                            //           )),
-                            // );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(0.0),
@@ -251,10 +240,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => TeamLeadMailPage()),
+                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(

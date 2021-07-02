@@ -1,20 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
+import 'package:sankofa_sme_exec/utilities/database.dart';
+
+final otpController = TextEditingController();
 
 //get user otp to verify they exist
 class OtpPage extends StatefulWidget {
   final String fromPage;
-
+  final emailC;
   final userList;
   final documentID;
   const OtpPage(
       {Key? key,
       required this.fromPage,
       required this.documentID,
+      required this.emailC,
       required this.userList})
       : super(key: key);
 
@@ -33,7 +39,8 @@ class _OtpPageState extends State<OtpPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            obscureText: true,
+            obscureText: false,
+            controller: otpController,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -58,7 +65,7 @@ class _OtpPageState extends State<OtpPage> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           //different routing for different pages
           if (this.widget.fromPage == 'signUp') {
             FirebaseFirestore.instance
@@ -72,59 +79,35 @@ class _OtpPageState extends State<OtpPage> {
                 });
               });
             });
-            print(sectors);
+            //check if otp is valid
+            if (EmailAuth.validate(
+                receiverMail: this.widget.emailC,
+                userOTP: otpController.text)) {
+              //add valid user to db
+              await Database.addItem(
+                  fName: nameController.text, email: this.widget.emailC);
 
-//push to register only when sectoprs are filled?
-            if (sectors.isNotEmpty)
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegistrationPage()));
-
-            print(sectors);
+              //push to register only when sectoprs are filled?
+              if (sectors.isNotEmpty)
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => RegistrationPage(),
+                  ),
+                );
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => RegistrationPage()));
+            }
           } else {
-            //check if
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => LandingPage(
-            //               docID: widget.documentID,
-            //             )));
-
-
             //should remove all pages in state, user cannot go back to prev page
-            Navigator.pushReplacementNamed(context, "/DiagnosticPage");
+            if (EmailAuth.validate(
+                receiverMail: this.widget.emailC,
+                userOTP: otpController.text)) {
+              Navigator.pushReplacementNamed(context, "/DiagnosticPage");
+            }
+            
           }
-
-          // if (this.widget.from == "login") {
-          //   VerifyOPT();
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => ProfilePage(
-          //                 userName: this.widget.email,
-          //               )));
-
-          //   //  Navigator.pushNamedAndRemoveUntil(
-          //   //           context, ProfilePage.idScreen, (route) => false);
-
-          // } else {
-          //   userDbRef.push().set({
-          //     "name": this.widget.name,
-          //     "email": this.widget.email,
-          //     "score": counter,
-          //     "preferences": arrRes
-          //   }).then((_) {
-          //     ScaffoldMessenger.of(context)
-          //         .showSnackBar(SnackBar(content: Text('Successfully Added')));
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) => ProfilePage(
-          //                   userName: this.widget.email,
-          //                 )));
-          //   }).catchError((onError) {
-          //     ScaffoldMessenger.of(context)
-          //         .showSnackBar(SnackBar(content: Text(onError)));
-          //   });
         },
         child: Text(
           'LOGIN',
