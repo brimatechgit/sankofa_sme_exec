@@ -5,6 +5,7 @@ import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 List<Widget> widgetList = [];
@@ -93,6 +94,11 @@ class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green),
                                   onPressed: () async {
+
+setState(() {
+                            totalMidTermSkills = selectedCountList!.length;
+                          });
+
                                     //add skills to created document in db here
                                     await Database.addSkills(compName: companyNameController.text, location: 'mid term', diagnName: assessNameController.text);
 

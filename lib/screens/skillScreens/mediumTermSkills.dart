@@ -182,10 +182,6 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => TeamLeadMailPage()),
                           Navigator.push(
                             context,
                             MaterialPageRoute(

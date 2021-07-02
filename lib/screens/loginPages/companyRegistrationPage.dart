@@ -80,7 +80,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         borderRadius: BorderRadius.circular(15.0)),
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: DropdownButton<String>(
-                      hint: priSectordropdownValue == null ? Text('Select Secondary Sector') : Text(priSectordropdownValue),
+                      hint: priSectordropdownValue == null ? Text('Select Primary Sector') : Text(priSectordropdownValue),
                       // value: priSectordropdownValue,
                       icon: Icon(
                         Icons.arrow_downward,

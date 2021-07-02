@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/review_mailPage.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -105,20 +106,6 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                 ],
               ),
             ),
-            //mid container
-            // Flexible(
-            //     child: Column(
-            //   children: [
-            //     Text('Leaders nominated'),
-            //     SizedBox(height: 35.0),
-            //     ListView.builder(
-            //         itemCount: teamLeadMailList.length,
-            //         itemBuilder: (context, index) {
-            //           return Text(
-            //               '${teamLeadMailList[index]['name']}: ${teamLeadMailList[index]['email']} ');
-            //         })
-            //   ],
-            // )),
 
             //a start button and a button to enter another team lead email
             Flexible(
@@ -153,11 +140,13 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                               return AlertDialog(
                                 title: Text("Notice"),
                                 content: Text(
-                                    "Please confirm!\n Total team leaders: ${teamLeadMailList.length}\n Total skills selected: ${selectedCountList!.length}"),
+                                    """Please confirm!\nTotal team leaders: ${teamLeadMailList.length}\n 
+                                    Total Near Term skills selected: $totalNearTermSkills\n
+                                    Total Medium Term skills selected: $totalMidTermSkills
+                                    """),
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {
-
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -166,7 +155,6 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                                         //  email();
                                       },
                                       child: Text('Proceed')),
-
                                   ElevatedButton(
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -199,6 +187,7 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
         ));
   }
 }
+
 email() async {
   String username = 'bogosi@sankofa.digital';
   String password = '';
@@ -215,9 +204,11 @@ email() async {
     ..recipients.add('tshepang@sankofa.digital')
     ..ccRecipients.add('bogosim15@gmail.com')
     ..bccRecipients.add(Address(''))
-    ..subject = 'Test Dart Mailer for Emailing Team Leads :: 😀 :: ${DateTime.now()}'
+    ..subject =
+        'Test Dart Mailer for Emailing Team Leads :: 😀 :: ${DateTime.now()}'
     ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-    ..html = "<h1>emailing team leads with instructions</h1>\n<p>Hey! Congratulations on being a Team Lead these are your instructions</p>";
+    ..html =
+        "<h1>emailing team leads with instructions</h1>\n<p>Hey! Congratulations on being a Team Lead these are your instructions</p>";
 
   try {
     final sendReport = await send(message, smtpServer);
@@ -229,8 +220,6 @@ email() async {
     }
   }
   // DONE
-
-
 
   // Sending multiple messages with the same connection
   //
