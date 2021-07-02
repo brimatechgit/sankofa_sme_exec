@@ -140,8 +140,8 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                               return AlertDialog(
                                 title: Text("Notice"),
                                 content: Text(
-                                    """Please confirm!\nTotal team leaders: ${teamLeadMailList.length}\n 
-                                    Total Near Term skills selected: $totalNearTermSkills\n
+                                    """Please confirm!\nTotal team leaders: ${teamLeadMailList.length}
+                                    Total Near Term skills selected: $totalNearTermSkills
                                     Total Medium Term skills selected: $totalMidTermSkills
                                     """),
                                 actions: [
