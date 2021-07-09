@@ -72,7 +72,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    DiagnosisGraphPage()));
+                                                    DiagnosisGraphPage(
+                                                      ref: diagnostic.id,
+                                                    )));
                                         // Navigator.push(
                                         //     context,
                                         //     MaterialPageRoute(
@@ -86,7 +88,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                               children: [
                                                 Expanded(
                                                     child: Text(
-                                                        '${diagnostic.id}')),
+                                                        '${diagnostic.get('Reference')}')),
                                                 SizedBox(width: 5.0),
                                                 //check if assesment is wip or completed
                                                 Text(status,

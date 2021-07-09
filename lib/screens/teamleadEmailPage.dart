@@ -140,10 +140,7 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                               return AlertDialog(
                                 title: Text("Notice"),
                                 content: Text(
-                                    """Please confirm!\nTotal team leaders: ${teamLeadMailList.length}
-                                    Total Near Term skills selected: $totalNearTermSkills
-                                    Total Medium Term skills selected: $totalMidTermSkills
-                                    """),
+                                    """Please confirm!\nTotal team leaders: ${teamLeadMailList.length}\nTotal Near Term skills selected: $totalNearTermSkills\nTotal Medium Term skills selected: $totalMidTermSkills"""),
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {

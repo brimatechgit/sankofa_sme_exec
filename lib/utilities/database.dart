@@ -119,6 +119,7 @@ class Database {
         "Name": teamLeadMailList[i]['name'].toString(),
         "Email": teamLeadMailList[i]['email'].toString(),
         "Self Assessment Result Medium Term": '',
+        "Self Assessment Result Near Term": '',
         "Role": 'Team Lead',
         "Self Assessment Status" : "TO-DO"
       };
@@ -145,6 +146,28 @@ class Database {
      teamLeadMailList.clear();
   }
 
+//changes the state of assessment/diagnostic
+static Future<void> updateDiagnostic({
+    // required String docuID,
+    required String reference,
+  }) async {
+    DocumentReference documentReferencer =
+        _mainCollection.doc(userID).collection('Diagnostics').doc(reference);
+    
+    DocumentReference documentReferencerDiag = _diagCollection.doc(reference);
+
+    documentReferencer.update({
+      "Stage": 'finalized'
+    });
+
+    documentReferencerDiag.update({
+      "Stage": 'finalized'
+    });
+
+
+  }
+
+
   //creates a diagnostic in user collection and diagnostic collection
   //should update
   static Future<void> addDiagnostic({
@@ -152,21 +175,23 @@ class Database {
     required String email,
     required String reference,
   }) async {
-    // var updateDiag = _mainCollection.doc();
+    // creates a diagnostic collection in the users
     DocumentReference documentReferencer =
-        _mainCollection.doc(userID).collection('Diagnostics').doc(diagnName);
-
-    DocumentReference documentReferencerDiag = _diagCollection.doc();
+        _mainCollection.doc(userID).collection('Diagnostics').doc();
+    
+    DocumentReference documentReferencerDiag = _diagCollection.doc(documentReferencer.id);
 
     Map<String, dynamic> data = <String, dynamic>{
       "Start Date": FieldValue.serverTimestamp(),
+      "Reference": diagnName,
     };
 
     Map<String, dynamic> diagData = <String, dynamic>{
       "Company Name": companyNameController.text,
       "Reference": diagnName,
       "Start Date": FieldValue.serverTimestamp(),
-      "id": documentReferencerDiag.id
+      "id": documentReferencer.id,
+      "Stage": 'Assessment'
     };
 
     await documentReferencer
