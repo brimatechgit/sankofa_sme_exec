@@ -14,13 +14,11 @@ class SelectedMediumSkillsPage extends StatefulWidget {
   var totalSkills;
   SelectedMediumSkillsPage({required this.totalSkills});
   @override
-  _SelectedMediumSkillsPageState createState() => _SelectedMediumSkillsPageState();
+  _SelectedMediumSkillsPageState createState() =>
+      _SelectedMediumSkillsPageState();
 }
 
 class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
-  
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +30,8 @@ class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
         if (selectedCountList != null)
           Flexible(
               flex: 0,
-              child:
-                  Text('Total skills selected ${this.widget.totalSkills!.length}')),
-
+              child: Text(
+                  'Total skills selected ${this.widget.totalSkills!.length}')),
         Flexible(
           flex: 2,
           child: ListView.builder(
@@ -54,7 +51,6 @@ class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
                 );
               }),
         ),
-
         Flexible(
             flex: 0,
             child: Row(
@@ -94,13 +90,16 @@ class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green),
                                   onPressed: () async {
-
-setState(() {
-                            totalMidTermSkills = selectedCountList!.length;
-                          });
+                                    setState(() {
+                                      totalMidTermSkills =
+                                          this.widget.totalSkills.length;
+                                    });
 
                                     //add skills to created document in db here
-                                    await Database.addSkills(compName: companyNameController.text, location: 'mid term', diagnName: assessNameController.text);
+                                    await Database.addSkills(
+                                        compName: companyNameController.text,
+                                        location: 'mid term',
+                                        diagnName: assessNameController.text);
 
                                     Navigator.push(
                                         context,
