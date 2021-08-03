@@ -100,26 +100,14 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                 child: ElevatedButton(
                   child: Text('Finalize and Proceed'),
                   onPressed: () {
-                    FirebaseFirestore.instance
-                        .collection(
-                            "/Diagnostics/${this.widget.ref}/Strategic Skills/testing/Medium Term Skills")
-                        .get()
-                        .then((querySnapshot) {
-                      querySnapshot.docs.forEach((result) {
-                        setState(() {
-                          midTermList.add(result.get('Skills'));
-                        });
-                      });
-                    });
-
                     //navigate to filteredGraphs page
-                    // Navigator.pushAndRemoveUntil(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (BuildContext context) => SkillsGraphs(
-                    //               docuID: this.widget.ref,
-                    //             )),
-                    //     ModalRoute.withName('/'));
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => SkillsGraphs(
+                                  docuID: this.widget.ref,
+                                )),
+                        ModalRoute.withName('/'));
                   },
                 ),
               ),
