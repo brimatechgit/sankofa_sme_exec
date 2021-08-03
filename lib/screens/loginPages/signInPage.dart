@@ -54,35 +54,37 @@ class _SignInPageState extends State<SignInPage> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
         onPressed: () async {
-          
           //validate email
           //check user in db
-          if (EmailValidator.validate(_emailController.text)) {
-                 EmailAuth.sessionName = "Test Session";
-  var res = await EmailAuth.sendOtp(receiverMail: _emailController.text); 
+          if (true)
+          // EmailValidator.validate(_emailController.text))
 
+          {
+            EmailAuth.sessionName = "Test Session";
+            // var res = await EmailAuth.sendOtp(receiverMail: _emailController.text);
 
             FirebaseFirestore.instance
-                .collection("Users").where("email", isEqualTo: _emailController.text)
+                .collection("Users")
+                .where("email",
+                    isEqualTo: 'bogosi@sankofa.digital') //change email here
                 .get()
                 .then((querySnapshot) {
               querySnapshot.docs.forEach((result) {
                 userID = result.id;
-                
 
-                  //should send otp to user
-                    if (res) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OtpPage(
-                                    userList: result.data(),
-                                    documentID: result.id,
-                                    emailC: _emailController.text,
-                                    fromPage: 'signIn',
-                                  )));
-                    }
-                  //.then((value) => showDialog(
+                //should send otp to user
+                // if (res) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpPage(
+                              userList: result.data(),
+                              documentID: result.id,
+                              emailC: _emailController.text,
+                              fromPage: 'signIn',
+                            )));
+                // }
+                //.then((value) => showDialog(
                 //   context: context,
                 //   builder: (BuildContext context) {
                 //     return AlertDialog(
@@ -109,7 +111,6 @@ class _SignInPageState extends State<SignInPage> {
               },
             );
           }
-
 
           // Navigator.push(
           //     context,

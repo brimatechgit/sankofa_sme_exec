@@ -80,9 +80,13 @@ class _OtpPageState extends State<OtpPage> {
               });
             });
             //check if otp is valid
-            if (EmailAuth.validate(
-                receiverMail: this.widget.emailC,
-                userOTP: otpController.text)) {
+            if (true
+
+                // EmailAuth.validate(
+                //   receiverMail: this.widget.emailC,
+                //   userOTP: otpController.text)
+
+                ) {
               //add valid user to db
               await Database.addItem(
                   fName: nameController.text, email: this.widget.emailC);
@@ -101,12 +105,12 @@ class _OtpPageState extends State<OtpPage> {
             }
           } else {
             //should remove all pages in state, user cannot go back to prev page
-            if (EmailAuth.validate(
-                receiverMail: this.widget.emailC,
-                userOTP: otpController.text)) {
-              Navigator.pushReplacementNamed(context, "/DiagnosticPage");
-            }
-            
+            // if (EmailAuth.validate(
+            //     receiverMail: this.widget.emailC,
+            //     userOTP: otpController.text)) {
+            //   Navigator.pushReplacementNamed(context, "/DiagnosticPage");
+            // }
+            Navigator.pushReplacementNamed(context, "/DiagnosticPage");
           }
         },
         child: Text(

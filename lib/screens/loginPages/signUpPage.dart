@@ -7,8 +7,8 @@ import 'package:sankofa_sme_exec/utilities/database.dart';
 
 import 'otpPage.dart';
 
- final nameController = TextEditingController();
- final emailController = TextEditingController();
+final nameController = TextEditingController();
+final emailController = TextEditingController();
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -19,10 +19,6 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-
- 
-
- 
 
   // Future<void> addItem({
   //   required String fName,
@@ -112,15 +108,17 @@ class _SignUpPageState extends State<SignUpPage> {
             if (EmailValidator.validate(emailController.text)) {
               //send otp
               EmailAuth.sessionName = "Test Session";
-  var res = await EmailAuth.sendOtp(receiverMail: emailController.text); 
+              // var res = await EmailAuth.sendOtp(receiverMail: emailController.text);
 
-              if (res) {
+              if (true) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => OtpPage(
-                          emailC: emailController.text,
-                              fromPage: 'signUp', documentID: null, userList: null,
+                              emailC: emailController.text,
+                              fromPage: 'signUp',
+                              documentID: null,
+                              userList: null,
                             )));
               }
             } else {
