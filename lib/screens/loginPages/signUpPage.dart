@@ -4,6 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:sankofa_sme_exec/widgets/login_widgets.dart';
 
 import 'otpPage.dart';
 
@@ -45,57 +46,24 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            alignment: Alignment.centerLeft,
-            decoration: kBoxDecorationStyle,
-            height: 60.0,
-            child: TextField(
-              controller: nameController,
-              keyboardType: TextInputType.text,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'OpenSans',
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14.0),
-                prefixIcon: Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                hintText: 'Name',
-                hintStyle: kHintTextStyle,
-              ),
-            ),
-          ),
-        ),
+            padding: const EdgeInsets.all(8.0),
+            child: TextFieldWidget(
+              hint: 'Name',
+              textController: nameController,
+              icon: Icons.person,
+            )),
         SizedBox(height: 25.0),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            alignment: Alignment.centerLeft,
-            decoration: kBoxDecorationStyle,
-            height: 60.0,
-            child: TextField(
-              controller: emailController,
-              keyboardType: TextInputType.text,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'OpenSans',
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14.0),
-                prefixIcon: Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                hintText: 'Enter email',
-                hintStyle: kHintTextStyle,
-              ),
-            ),
-          ),
+              alignment: Alignment.centerLeft,
+              decoration: kBoxDecorationStyle,
+              height: 60.0,
+              child: TextFieldWidget(
+                textController: emailController,
+                hint: 'example@mail.com',
+                icon: Icons.email_outlined,
+              )),
         ),
         ElevatedButton(
           child: Text('Enter'),

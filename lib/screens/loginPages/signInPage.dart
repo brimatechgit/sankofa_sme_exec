@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/otpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:sankofa_sme_exec/widgets/login_widgets.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -16,121 +17,71 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
 
-  Widget _buildOTP() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: false,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'mail@mail.com',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  _btnFunction() async {
+    //validate email
+    //check user in db
+    if (true)
+    // EmailValidator.validate(_emailController.text))
 
-  Widget _buildLoginBtn(context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: ElevatedButton(
-        onPressed: () async {
-          //validate email
-          //check user in db
-          if (true)
-          // EmailValidator.validate(_emailController.text))
+    {
+      EmailAuth.sessionName = "Test Session";
+      // var res = await EmailAuth.sendOtp(receiverMail: _emailController.text);
 
-          {
-            EmailAuth.sessionName = "Test Session";
-            // var res = await EmailAuth.sendOtp(receiverMail: _emailController.text);
+      FirebaseFirestore.instance
+          .collection("Users")
+          .where("email",
+              isEqualTo: 'bogosi@sankofa.digital') //change email here
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          userID = result.id;
 
-            FirebaseFirestore.instance
-                .collection("Users")
-                .where("email",
-                    isEqualTo: 'bogosi@sankofa.digital') //change email here
-                .get()
-                .then((querySnapshot) {
-              querySnapshot.docs.forEach((result) {
-                userID = result.id;
+          //should send otp to user
+          // if (res) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OtpPage(
+                        userList: result.data(),
+                        documentID: result.id,
+                        emailC: _emailController.text,
+                        fromPage: 'signIn',
+                      )));
+          // }
+          //.then((value) => showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       title: Text("Notice"),
+          //       content: Text("No email found, please re-enter"),
+          //       actions: [],
+          //     );
+          //   },
+          // ));
 
-                //should send otp to user
-                // if (res) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpPage(
-                              userList: result.data(),
-                              documentID: result.id,
-                              emailC: _emailController.text,
-                              fromPage: 'signIn',
-                            )));
-                // }
-                //.then((value) => showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) {
-                //     return AlertDialog(
-                //       title: Text("Notice"),
-                //       content: Text("No email found, please re-enter"),
-                //       actions: [],
-                //     );
-                //   },
-                // ));
-
-                // if(resul)
-                // print('${result.data()}, ${result.id}');
-              });
-            });
-          } else {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Notice"),
-                  content: Text("Invalid email entered"),
-                  actions: [],
-                );
-              },
-            );
-          }
-
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => OtpPage(
-          //               fromPage: 'signIn',
-          //             )));
+          // if(resul)
+          // print('${result.data()}, ${result.id}');
+        });
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Notice"),
+            content: Text("Invalid email entered"),
+            actions: [],
+          );
         },
-        child: Text(
-          'Get OTP',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
+      );
+    }
+
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => OtpPage(
+    //               fromPage: 'signIn',
+    //             )));
   }
 
   @override
@@ -150,11 +101,33 @@ class _SignInPageState extends State<SignInPage> {
           ),
         ),
         SizedBox(height: 30.0),
-        _buildOTP(),
+        TextFieldWidget(
+          textController: _emailController,
+          hint: 'example@mail.com',
+          icon: Icons.email_outlined,
+        ),
         SizedBox(
           height: 30.0,
         ),
-        _buildLoginBtn(context),
+        // LoginBtn(
+        //   context: context,
+        //   onPressed: _btnFunction(),
+        //   text: 'Login',
+        // ),
+
+        ElevatedButton(
+          onPressed: _btnFunction,
+          child: Text(
+            'Login',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1.5,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+          ),
+        ),
 
         // Flexible(
 
