@@ -35,6 +35,9 @@ dependencies:
   email_auth: ^0.0.1+4
   syncfusion_flutter_charts: ^19.1.56
   expansion_tile_card: ^2.0.0 
+  firebase_core: ^1.4.0
+  firebase_auth: ^3.0.1
+
   
 
 dev_dependencies:

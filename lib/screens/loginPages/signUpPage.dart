@@ -48,6 +48,8 @@ class _SignUpPageState extends State<SignUpPage> {
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFieldWidget(
+              obscure: false,
+              type: TextInputType.name,
               hint: 'Name',
               textController: nameController,
               icon: Icons.person,
@@ -60,6 +62,8 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: kBoxDecorationStyle,
               height: 60.0,
               child: TextFieldWidget(
+                obscure: false,
+                type: TextInputType.emailAddress,
                 textController: emailController,
                 hint: 'example@mail.com',
                 icon: Icons.email_outlined,

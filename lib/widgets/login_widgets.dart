@@ -11,12 +11,16 @@ class TextFieldWidget extends StatelessWidget {
     required TextEditingController textController,
     required this.hint,
     required this.icon,
+    required this.type,
+    required this.obscure,
   })  : _controller = textController,
         super(key: key);
 
   final TextEditingController _controller;
   final String hint;
   final IconData icon;
+  final TextInputType type;
+  final bool obscure;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +34,8 @@ class TextFieldWidget extends StatelessWidget {
           height: 60.0,
           child: TextField(
             controller: _controller,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: false,
+            keyboardType: type,
+            obscureText: obscure,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -58,35 +62,5 @@ class TextFieldWidget extends StatelessWidget {
 //necessary buttons
 
 //one button that takes an on pressed, text
-class LoginBtn extends StatelessWidget {
-  const LoginBtn(
-      {Key? key,
-      required this.context,
-      required this.text,
-      required this.onPressed})
-      : super(key: key);
 
-  final context;
-  final onPressed;
-  final text;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-}

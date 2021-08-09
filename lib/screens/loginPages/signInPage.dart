@@ -16,6 +16,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   _btnFunction() async {
     //validate email
@@ -95,90 +96,80 @@ class _SignInPageState extends State<SignInPage> {
           'Enter Email',
           style: TextStyle(
             color: Colors.white,
+            fontFamily: 'Roboto',
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        // SizedBox(height: 30.0),
+        Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: TextFieldWidget(
+            obscure: false,
+            type: TextInputType.emailAddress,
+            textController: _emailController,
+            hint: 'example@mail.com',
+            icon: Icons.email_outlined,
+          ),
+        ),
+        // SizedBox(
+        //   height: 30.0,
+        // ),
+        Text(
+          'Password',
+          style: TextStyle(
+            color: Colors.white,
             fontFamily: 'OpenSans',
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 30.0),
-        TextFieldWidget(
-          textController: _emailController,
-          hint: 'example@mail.com',
-          icon: Icons.email_outlined,
+        // SizedBox(height: 30.0),
+        Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: TextFieldWidget(
+            obscure: true,
+            type: TextInputType.visiblePassword,
+            textController: _passwordController,
+            hint: '********',
+            icon: Icons.email_outlined,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 13.0, top: 5.0),
+              child: GestureDetector(
+                child: Text('Forgot passwword'),
+                onTap: () {},
+              ),
+            ),
+          ],
         ),
         SizedBox(
           height: 30.0,
         ),
-        // LoginBtn(
-        //   context: context,
-        //   onPressed: _btnFunction(),
-        //   text: 'Login',
-        // ),
-
-        ElevatedButton(
-          onPressed: _btnFunction,
-          child: Text(
-            'Login',
-            style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1.5,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
+        SizedBox(
+          width: double.infinity,
+          height: 75,
+          child: Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: ElevatedButton(
+              onPressed: _btnFunction,
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 1.5,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
             ),
           ),
-        ),
-
-        // Flexible(
-
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.all(8.0),
-        //         child: Text('Please enter email'),
-        //       ),
-        //       Container(
-        //         alignment: Alignment.centerLeft,
-        //         decoration: kBoxDecorationStyle,
-        //         height: 60.0,
-        //         child: TextField(
-        //           controller: _emailController,
-        //           keyboardType: TextInputType.text,
-        //           style: TextStyle(
-        //             color: Colors.white,
-        //             fontFamily: 'OpenSans',
-        //           ),
-        //           decoration: InputDecoration(
-        //             border: InputBorder.none,
-        //             contentPadding: EdgeInsets.only(top: 14.0),
-        //             prefixIcon: Icon(
-        //               Icons.email,
-        //               color: Colors.white,
-        //             ),
-        //             hintText: 'email@email.com',
-        //             hintStyle: kHintTextStyle,
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // Flexible(
-
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(12.0),
-        //       child: ElevatedButton(
-        //           onPressed: () {
-        //             Navigator.push(
-        //                 context,
-        //                 MaterialPageRoute(
-        //                     builder: (context) => OtpPage(
-        //                           fromPage: 'signIn',
-        //                         )));
-        //           },
-        //           child: Text('Submit')),
-        //     ))
+        )
       ]),
     );
   }
