@@ -1,7 +1,13 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/otpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
@@ -15,6 +21,8 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final auth = FirebaseAuth.instance;
 
   Widget _buildOTP() {
     return Column(
@@ -22,29 +30,59 @@ class _SignInPageState extends State<SignInPage> {
       children: <Widget>[
         SizedBox(height: 10.0),
         Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            obscureText: false,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(
                 color: Colors.white,
+                fontFamily: 'OpenSans',
               ),
-              hintText: 'mail@mail.com',
-              hintStyle: kHintTextStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                hintText: 'Name',
+                hintStyle: kHintTextStyle,
+              ),
             ),
           ),
-        ),
+      ],
+    );
+  }
+   Widget _buildPassword() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0),
+        Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: _passwordController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                hintText: 'Name',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -54,73 +92,13 @@ class _SignInPageState extends State<SignInPage> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       child: ElevatedButton(
         onPressed: () async {
-          //validate email
-          //check user in db
-          if (true)
-          // EmailValidator.validate(_emailController.text))
-
-          {
-            EmailAuth.sessionName = "Test Session";
-            // var res = await EmailAuth.sendOtp(receiverMail: _emailController.text);
-
-            FirebaseFirestore.instance
-                .collection("Users")
-                .where("email",
-                    isEqualTo: 'bogosi@sankofa.digital') //change email here
-                .get()
-                .then((querySnapshot) {
-              querySnapshot.docs.forEach((result) {
-                userID = result.id;
-
-                //should send otp to user
-                // if (res) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpPage(
-                              userList: result.data(),
-                              documentID: result.id,
-                              emailC: _emailController.text,
-                              fromPage: 'signIn',
-                            )));
-                // }
-                //.then((value) => showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) {
-                //     return AlertDialog(
-                //       title: Text("Notice"),
-                //       content: Text("No email found, please re-enter"),
-                //       actions: [],
-                //     );
-                //   },
-                // ));
-
-                // if(resul)
-                // print('${result.data()}, ${result.id}');
-              });
-            });
-          } else {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Notice"),
-                  content: Text("Invalid email entered"),
-                  actions: [],
-                );
-              },
-            );
-          }
-
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => OtpPage(
-          //               fromPage: 'signIn',
-          //             )));
+          auth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+         // auth.signInWithEmailLink(email: _emailController.text, emailLink: emailLink);
+          //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DiagnosticsPage(docID: docID)))
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegistrationPage()));
         },
         child: Text(
-          'Get OTP',
+          'Login',
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.5,
@@ -153,7 +131,15 @@ class _SignInPageState extends State<SignInPage> {
         _buildOTP(),
         SizedBox(
           height: 30.0,
+
         ),
+         SizedBox(height: 30.0),
+        _buildPassword(),
+        SizedBox(
+          height: 30.0,
+
+        ),
+
         _buildLoginBtn(context),
 
         // Flexible(

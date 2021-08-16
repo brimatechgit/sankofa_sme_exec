@@ -2,13 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/verify.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'otpPage.dart';
 
 final nameController = TextEditingController();
 final emailController = TextEditingController();
+final passwordController = TextEditingController();
+final auth = FirebaseAuth.instance;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -61,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
-                  Icons.email,
+                  Icons.person,
                   color: Colors.white,
                 ),
                 hintText: 'Name',
@@ -95,6 +99,36 @@ class _SignUpPageState extends State<SignUpPage> {
                 hintStyle: kHintTextStyle,
               ),
             ),
+
+          ),
+        ),
+         SizedBox(height: 25.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: passwordController,
+              keyboardType: TextInputType.text,
+               obscureText: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Enter Password',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+
           ),
         ),
         ElevatedButton(
@@ -107,20 +141,22 @@ class _SignUpPageState extends State<SignUpPage> {
 
             if (EmailValidator.validate(emailController.text)) {
               //send otp
-              EmailAuth.sessionName = "Test Session";
+             // EmailAuth.sessionName = "Test Session";
               // var res = await EmailAuth.sendOtp(receiverMail: emailController.text);
+              auth.createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> Verify()));
 
-              if (true) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpPage(
-                              emailC: emailController.text,
-                              fromPage: 'signUp',
-                              documentID: null,
-                              userList: null,
-                            )));
-              }
+              // if (true) {
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => OtpPage(
+              //                 emailC: emailController.text,
+              //                 fromPage: 'signUp',
+              //                 documentID: null,
+              //                 userList: null,
+              //               )));
+              // }
             } else {
               showDialog(
                 context: context,
