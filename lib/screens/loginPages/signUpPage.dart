@@ -2,14 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/verify.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
-import 'package:sankofa_sme_exec/widgets/login_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'otpPage.dart';
 
 final nameController = TextEditingController();
 final emailController = TextEditingController();
+final passwordController = TextEditingController();
+final auth = FirebaseAuth.instance;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -46,28 +50,85 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFieldWidget(
-              obscure: false,
-              type: TextInputType.name,
-              hint: 'Name',
-              textController: nameController,
-              icon: Icons.person,
-            )),
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: nameController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                hintText: 'Name',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
+        ),
         SizedBox(height: 25.0),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-              alignment: Alignment.centerLeft,
-              decoration: kBoxDecorationStyle,
-              height: 60.0,
-              child: TextFieldWidget(
-                obscure: false,
-                type: TextInputType.emailAddress,
-                textController: emailController,
-                hint: 'example@mail.com',
-                icon: Icons.email_outlined,
-              )),
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: emailController,
+              keyboardType: TextInputType.text,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: Colors.white,
+                ),
+                hintText: 'Enter email',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 25.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            child: TextField(
+              controller: passwordController,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Enter Password',
+                hintStyle: kHintTextStyle,
+              ),
+            ),
+          ),
         ),
         ElevatedButton(
           child: Text('Enter'),
@@ -79,20 +140,110 @@ class _SignUpPageState extends State<SignUpPage> {
 
             if (EmailValidator.validate(emailController.text)) {
               //send otp
-              EmailAuth.sessionName = "Test Session";
+              // EmailAuth.sessionName = "Test Session";
               // var res = await EmailAuth.sendOtp(receiverMail: emailController.text);
+              // auth.createUserWithEmailAndPassword(
+              //     email: emailController.text,
+              //     password: passwordController.text);
 
-              if (true) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpPage(
-                              emailC: emailController.text,
-                              fromPage: 'signUp',
-                              documentID: null,
-                              userList: null,
-                            )));
-              }
+              final user = await auth
+                  .createUserWithEmailAndPassword(
+                      email: emailController.text,
+                      password: passwordController.text)
+                  .then((user) async {
+                if (user != null) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => Verify(
+                            nameContr: nameController,
+                            emailContr: emailController,
+                          )));
+
+                  // user.user!.sendEmailVerification();
+
+                  //sign in user //temp
+
+                  //   if (user.user!.emailVerified) {
+                  //     auth.signInWithEmailAndPassword(
+                  //         email: emailController.text,
+                  //         password: passwordController.text);
+
+                  //     FirebaseFirestore.instance
+                  //         .collection("Sectors")
+                  //         .get()
+                  //         .then((querySnapshot) {
+                  //       querySnapshot.docs.forEach((result) {
+                  //         //should add to the list immediately
+                  //         setState(() {
+                  //           sectors.add(result.get('Sector'));
+                  //         });
+                  //       });
+                  //     });
+
+                  //     //add valid user to db
+                  //     await Database.addItem(
+                  //       uid: auth.currentUser!.uid,
+                  //       fName: nameController.text,
+                  //       email: emailController.text,
+                  //     );
+
+                  //     //push to register only when sectoprs are filled?
+                  //     if (sectors.isNotEmpty && auth.currentUser != null)
+                  //       Navigator.of(context).pushReplacement(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => RegistrationPage(),
+                  //         ),
+                  //       );
+                  // }
+                }
+              });
+
+              // FirebaseFirestore.instance
+              //     .collection("Sectors")
+              //     .get()
+              //     .then((querySnapshot) {
+              //   querySnapshot.docs.forEach((result) {
+              //     //should add to the list immediately
+              //     setState(() {
+              //       sectors.add(result.get('Sector'));
+              //     });
+              //   });
+              // });
+
+              // //add valid user to db
+              // await Database.addItem(
+              //   uid: auth.currentUser!.uid,
+              //   fName: nameController.text,
+              //   email: emailController.text,
+              // );
+
+              // //push to register only when sectoprs are filled?
+              // if (sectors.isNotEmpty && auth.currentUser != null)
+              //   Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(
+              //       builder: (context) => RegistrationPage(),
+              //     ),
+              //   );
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => RegistrationPage()));
+
+              // Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(builder: (context) => Verify()));
+              // Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(builder: (context) => RegistrationPage()));
+
+              // if (true) {
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => OtpPage(
+              //                 emailC: emailController.text,
+              //                 fromPage: 'signUp',
+              //                 documentID: null,
+              //                 userList: null,
+              //               )));
+              // }
             } else {
               showDialog(
                 context: context,

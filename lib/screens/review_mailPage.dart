@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/assessmentName.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
+import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
@@ -63,13 +64,26 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
               padding: const EdgeInsets.all(25.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  Navigator.push(
-                      context,
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => LandingPage(docID: userID,)));
+
+                  Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) => DiagnosticsPage(docID: userID,)));
+                          builder: (context) => LandingPage(
+                                docID: userID,
+                              )),
+                      (Route<dynamic> route) => false);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => DiagnosticsPage(docID: userID,)));
 
                   //add the teamleade to document, with the user's role
-                  await Database.addTeamLeaders(compName: companyNameController.text, );
+                  await Database.addTeamLeaders(
+                    compName: companyNameController.text,
+                  );
                 },
                 child: Text('Finalise'),
               ),

@@ -9,7 +9,6 @@ final CollectionReference _mainCollection = _firestore.collection('Users');
 final CollectionReference _diagCollection =
     _firestore.collection('Diagnostics');
 
-
 var currId = '';
 var userID;
 
@@ -17,11 +16,12 @@ class Database {
   // static String? userUid;
 
   static Future<void> addItem({
+    required String uid,
     required String fName,
     required String email,
   }) async {
     DocumentReference documentReferencer =
-        _mainCollection.doc(); //should check if document exists in db or not
+        _mainCollection.doc(uid); //should check if document exists in db or not
 
     Map<String, dynamic> data = <String, dynamic>{
       "First Name": fName,
@@ -37,15 +37,14 @@ class Database {
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
 
-        userID = documentReferencer.id;
+    userID = documentReferencer.id;
   }
 
   //  static Future<void> getSectors({
-  //    required 
+  //    required
   //  }) async {
 
-  //  } 
-
+  //  }
 
   //create collection in the relevent diagnostic
   //add the user skills selected
@@ -121,18 +120,15 @@ class Database {
         "Self Assessment Result Medium Term": '',
         "Self Assessment Result Near Term": '',
         "Role": 'Team Lead',
-        "Self Assessment Status" : "TO-DO"
+        "Self Assessment Status": "TO-DO"
       };
 
       await documentReferencerDiag
           .set(data)
           .whenComplete(() => print("Note item added to the database"))
           .catchError((e) => print(e));
-
-     
     }
 
-    
     // Map<String, dynamic> data = <String, dynamic>{
     //   "Skills": outterList,
 
@@ -143,30 +139,23 @@ class Database {
     //     .whenComplete(() => print("Note item added to the database"))
     //     .catchError((e) => print(e));
 
-     teamLeadMailList.clear();
+    teamLeadMailList.clear();
   }
 
 //changes the state of assessment/diagnostic
-static Future<void> updateDiagnostic({
+  static Future<void> updateDiagnostic({
     // required String docuID,
     required String reference,
   }) async {
     DocumentReference documentReferencer =
         _mainCollection.doc(userID).collection('Diagnostics').doc(reference);
-    
+
     DocumentReference documentReferencerDiag = _diagCollection.doc(reference);
 
-    documentReferencer.update({
-      "Stage": 'finalized'
-    });
+    documentReferencer.update({"Stage": 'finalized'});
 
-    documentReferencerDiag.update({
-      "Stage": 'finalized'
-    });
-
-
+    documentReferencerDiag.update({"Stage": 'finalized'});
   }
-
 
   //creates a diagnostic in user collection and diagnostic collection
   //should update
@@ -178,8 +167,9 @@ static Future<void> updateDiagnostic({
     // creates a diagnostic collection in the users
     DocumentReference documentReferencer =
         _mainCollection.doc(userID).collection('Diagnostics').doc();
-    
-    DocumentReference documentReferencerDiag = _diagCollection.doc(documentReferencer.id);
+
+    DocumentReference documentReferencerDiag =
+        _diagCollection.doc(documentReferencer.id);
 
     Map<String, dynamic> data = <String, dynamic>{
       "Start Date": FieldValue.serverTimestamp(),
@@ -209,9 +199,8 @@ static Future<void> updateDiagnostic({
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
 
-        currId = documentReferencerDiag.id;
+    currId = documentReferencerDiag.id;
   }
-
 
   //updates form w/ company name and sectors
   static Future<void> updateRegiForm({

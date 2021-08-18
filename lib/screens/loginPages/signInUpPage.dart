@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signInPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 
-
-
 //first page all users get tp
 class SignInUpPage extends StatelessWidget {
   const SignInUpPage({Key? key}) : super(key: key);
@@ -15,17 +13,14 @@ class SignInUpPage extends StatelessWidget {
         title: Text('Sign in'),
       ),
       body: Center(
-        child: Column(
-         
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text('Welcome to sankofa SME,'),
           SizedBox(height: 25.0),
           ElevatedButton(
             child: Text('Sign Up'),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SignUpPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()));
             },
           ),
           Padding(
@@ -41,8 +36,8 @@ class SignInUpPage extends StatelessWidget {
           ElevatedButton(
             child: Text('Sign In'),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SignInPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignInPage()));
             },
           ),
         ]),
