@@ -97,9 +97,9 @@ class _SelectedMediumSkillsPageState extends State<SelectedMediumSkillsPage> {
 
                                     //add skills to created document in db here
                                     await Database.addSkills(
-                                        compName: companyNameController.text,
                                         location: 'mid term',
-                                        diagnName: assessNameController.text);
+                                        diagnName: assessNameController.text,
+                                        currID: gDocuId);
 
                                     Navigator.push(
                                         context,

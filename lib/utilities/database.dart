@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sankofa_sme_exec/functions/randomchars.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('Users');
@@ -50,15 +52,15 @@ class Database {
   //add the user skills selected
   static Future<void> addSkills({
     // required List skills,
+    required String currID,
     required String diagnName,
-    required String compName,
     required String location,
   }) async {
     // DocumentReference documentReferencer = _mainCollection.doc(email).collection('Diagnostics').doc(); //should check if document exists in db or not
 
     if (location == 'short term') {
       DocumentReference documentReferencerShortTerm = _diagCollection
-          .doc(currId)
+          .doc(currID)
           .collection('Strategic Skills')
           .doc(diagnName)
           .collection('Short Term Skills')
@@ -76,7 +78,7 @@ class Database {
       selectedCountList!.clear();
     } else {
       DocumentReference documentReferencerMedTerm = _diagCollection
-          .doc(currId)
+          .doc(currID)
           .collection('Strategic Skills')
           .doc(diagnName)
           .collection('Medium Term Skills')
@@ -102,7 +104,7 @@ class Database {
   //add the teamleaders
   static Future<void> addTeamLeaders({
     // required List mailList,
-    required String compName, //company name
+    required String currID,
   }) async {
     // DocumentReference documentReferencer = _mainCollection.doc(email).collection('Diagnostics').doc(); //should check if document exists in db or not
 // var query = FirebaseFirestore.instance.collection('Diagnostics').where("Company Name" == compName);
@@ -110,7 +112,7 @@ class Database {
 // print(query.id);
     for (var i = 0; i < teamLeadMailList.length; i++) {
       DocumentReference documentReferencerDiag = _diagCollection
-          .doc(currId)
+          .doc(currID)
           .collection('Team')
           .doc(teamLeadMailList[i]['name'].toString());
 
@@ -157,17 +159,41 @@ class Database {
     documentReferencerDiag.update({"Stage": 'finalized'});
   }
 
+  //adds a new diagnostic
+  static Future<void> addNewDiagnostic({
+    required String diagnName,
+  }) async {
+    // creates a diagnostic collection in the users
+    DocumentReference documentReferencer =
+        _mainCollection.doc(userID).collection('Diagnostics').doc();
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "Start Date": FieldValue.serverTimestamp(),
+      "Reference": diagnName,
+    };
+
+    await documentReferencer
+        .set(data)
+        .whenComplete(() => print("Added new diagnostic in DB"))
+        .catchError((e) => print(e));
+
+    currId = documentReferencer.id;
+    gDocuId = documentReferencer.id;
+  }
+
   //creates a diagnostic in user collection and diagnostic collection
   //should update
   static Future<void> addDiagnostic({
     required String diagnName,
     required String email,
     required String reference,
+    required String from,
   }) async {
     // creates a diagnostic collection in the users
     DocumentReference documentReferencer =
         _mainCollection.doc(userID).collection('Diagnostics').doc();
 
+    // creates a diagnostic collection in the diagnostic main collection
     DocumentReference documentReferencerDiag =
         _diagCollection.doc(documentReferencer.id);
 
@@ -181,7 +207,8 @@ class Database {
       "Reference": diagnName,
       "Start Date": FieldValue.serverTimestamp(),
       "id": documentReferencer.id,
-      "Stage": 'Assessment'
+      "Stage": 'Assessment',
+      "Code": stringCode,
     };
 
     await documentReferencer
@@ -190,6 +217,9 @@ class Database {
         .catchError((e) => print(e));
 
     // _firestore.collection('Users')
+    // FirebaseFirestore.instance.collection('Users').doc(userID).update({
+    //   "Company": companyNameController.text,
+    // });
     FirebaseFirestore.instance.collection('Users').doc(userID).update({
       "Company": companyNameController.text,
     });
@@ -200,6 +230,7 @@ class Database {
         .catchError((e) => print(e));
 
     currId = documentReferencerDiag.id;
+    gDocuId = documentReferencerDiag.id;
   }
 
   //updates form w/ company name and sectors

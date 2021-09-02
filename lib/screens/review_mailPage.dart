@@ -5,12 +5,15 @@ import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 
 //final page, reviews teamlead emails
 //submits to db here?
 class ReviewMailPage extends StatefulWidget {
   final docID;
-  const ReviewMailPage({Key? key, this.docID}) : super(key: key);
+  final from;
+
+  const ReviewMailPage({Key? key, this.docID, this.from}) : super(key: key);
 
   @override
   _ReviewMailPageState createState() => _ReviewMailPageState();
@@ -72,6 +75,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LandingPage(
+                                from: this.widget.from,
                                 docID: userID,
                               )),
                       (Route<dynamic> route) => false);
@@ -82,7 +86,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
 
                   //add the teamleade to document, with the user's role
                   await Database.addTeamLeaders(
-                    compName: companyNameController.text,
+                    currID: gDocuId,
                   );
                 },
                 child: Text('Finalise'),

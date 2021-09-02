@@ -16,7 +16,6 @@ class SelectedSkillsPage extends StatefulWidget {
 }
 
 class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +29,6 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
               flex: 0,
               child:
                   Text('Total skills selected ${selectedCountList!.length}')),
-
         Flexible(
           flex: 2,
           child: ListView.builder(
@@ -50,7 +48,6 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                 );
               }),
         ),
-
         Flexible(
             flex: 0,
             child: Row(
@@ -92,10 +89,14 @@ class _SelectedSkillsPageState extends State<SelectedSkillsPage> {
                                   onPressed: () async {
                                     //update global nearterm skill total variable
                                     setState(() {
-                            totalNearTermSkills = selectedCountList!.length;
-                          });
+                                      totalNearTermSkills =
+                                          selectedCountList!.length;
+                                    });
                                     //add skills to created document in db here
-                                    await Database.addSkills(compName: companyNameController.text, location: 'short term', diagnName: assessNameController.text);
+                                    await Database.addSkills(
+                                        location: 'short term',
+                                        diagnName: assessNameController.text,
+                                        currID: gDocuId);
 
                                     Navigator.push(
                                         context,

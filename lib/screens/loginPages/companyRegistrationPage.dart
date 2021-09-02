@@ -19,8 +19,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  
-  
   final _pSectorController = TextEditingController();
   final _secSectorController = TextEditingController();
   @override
@@ -73,14 +71,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   SizedBox(height: 20.0),
                   Container(
-                    
                     decoration: BoxDecoration(
                         border:
                             Border.all(color: Colors.blueAccent, width: 0.5),
                         borderRadius: BorderRadius.circular(15.0)),
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: DropdownButton<String>(
-                      hint: priSectordropdownValue == null ? Text('Select Primary Sector') : Text(priSectordropdownValue),
+                      hint: priSectordropdownValue == null
+                          ? Text('Select Primary Sector')
+                          : Text(priSectordropdownValue),
                       // value: priSectordropdownValue,
                       icon: Icon(
                         Icons.arrow_downward,
@@ -94,10 +93,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       onChanged: (String? newValue) {
                         setState(() {
                           priSectordropdownValue = newValue!;
-                          
                         });
                       },
-                      items: sectors.map<DropdownMenuItem<String>>((String value) {
+                      items:
+                          sectors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -112,31 +111,32 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   SizedBox(height: 20.0),
                   //should be a dropdown
-            //       DropdownButton<String>(
-            //         value: dropdownValue,
-            //         hint: Text('Please choose a sector'),
-            //         items: sectors.map((value) {
-            //           return DropdownMenuItem<String>(
-            //             value: value,
-            //             child: Text(value),
-            //           );
-            //         }).toList(),
-            //        onChanged: (newValue) {
-            //   setState(() {
-            //     dropdownValue = newValue.toString();
-            //   });
-            // },
-            //       )
+                  //       DropdownButton<String>(
+                  //         value: dropdownValue,
+                  //         hint: Text('Please choose a sector'),
+                  //         items: sectors.map((value) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: value,
+                  //             child: Text(value),
+                  //           );
+                  //         }).toList(),
+                  //        onChanged: (newValue) {
+                  //   setState(() {
+                  //     dropdownValue = newValue.toString();
+                  //   });
+                  // },
+                  //       )
 
-            Container(
-                    
+                  Container(
                     decoration: BoxDecoration(
                         border:
                             Border.all(color: Colors.blueAccent, width: 0.5),
                         borderRadius: BorderRadius.circular(15.0)),
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: DropdownButton<String>(
-                      hint: secSectordropdownValue == null ? Text('Select Secondary Sector') : Text(secSectordropdownValue),
+                      hint: secSectordropdownValue == null
+                          ? Text('Select Secondary Sector')
+                          : Text(secSectordropdownValue),
                       // value: secSectordropdownValue,
                       icon: Icon(
                         Icons.arrow_downward,
@@ -155,7 +155,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           });
                         });
                       },
-                      items: sectors.map<DropdownMenuItem<String>>((String value2) {
+                      items: sectors
+                          .map<DropdownMenuItem<String>>((String value2) {
                         return DropdownMenuItem<String>(
                           value: value2,
                           child: Text(value2),
@@ -329,7 +330,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LandingPage()));
+                                    builder: (context) => LandingPage(
+                                          from: '',
+                                        )));
                           },
                         ),
                       ),

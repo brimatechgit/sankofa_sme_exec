@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/selected_skills.dart';
 import 'package:sankofa_sme_exec/screens/skill_sets.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:sankofa_sme_exec/widgets/custom_filter_list_dialog.dart';
 
@@ -85,33 +85,30 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //change skill sets color
             checkedIndex = index;
           });
-        //  fillList = selectedCountList!.toList();
-        //  if( count > 0){
-        //    fillList.clear();
-        //    fillList = selectedCountList!.toList();
-        //  }
-        //  for (var item in fillList) {
-           
-        //     print('card added');
-        //   widgetList.add(
-        //     Card(
-        //       child: ListTile(
-        //     title: Text(item + ' '),
-        //     subtitle: Text(title + ' testtt '),
-        //   )));
-        //  }
+          //  fillList = selectedCountList!.toList();
+          //  if( count > 0){
+          //    fillList.clear();
+          //    fillList = selectedCountList!.toList();
+          //  }
+          //  for (var item in fillList) {
 
-        widgetList.add(
-            Card(
+          //     print('card added');
+          //   widgetList.add(
+          //     Card(
+          //       child: ListTile(
+          //     title: Text(item + ' '),
+          //     subtitle: Text(title + ' testtt '),
+          //   )));
+          //  }
+
+          widgetList.add(Card(
               child: ListTile(
             title: Text(selectedCountList.toString() + ' '),
             subtitle: Text(title + ' testtt '),
           )));
-          
-            subSkill.add({
-              'title': '$title',
-              'count': selectedCountList!.length.toInt()
-            });
+
+          subSkill.add(
+              {'title': '$title', 'count': selectedCountList!.length.toInt()});
 
           // selectedCountListInner.add(selectedCountList!.sublist(count));
           applied = true;
@@ -240,7 +237,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -10,7 +10,9 @@ import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 class DiagnosticsPage extends StatefulWidget {
   final docID;
-  const DiagnosticsPage({Key? key, required this.docID}) : super(key: key);
+  final from;
+  const DiagnosticsPage({Key? key, required this.docID, required this.from})
+      : super(key: key);
 
   @override
   _DiagnosticsPageState createState() => _DiagnosticsPageState();
@@ -239,7 +241,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AssessmNamePage()));
+                              builder: (context) => AssessmNamePage(
+                                    from: this.widget.from,
+                                  )));
                     },
                     // child: Text('Diagnosis'),
                   ))
