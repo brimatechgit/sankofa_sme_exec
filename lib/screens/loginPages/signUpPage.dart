@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/verify.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
@@ -24,6 +27,45 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> performLogin(String provider, List<String> scopes,
+      Map<String, String> parameters) async {
+    try {
+      await FirebaseAuthOAuth()
+          .openSignInFlow(provider, scopes, parameters)
+          .then((value) => {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Verify(
+                          nameContr: value!.displayName,
+                          emailContr: value.email,
+                        )))
+              });
+    } on PlatformException catch (error) {
+      /**
+       * The plugin has the following error codes:
+       * 1. FirebaseAuthError: FirebaseAuth related error
+       * 2. PlatformError: An platform related error
+       * 3. PluginError: An error from this plugin
+       */
+      debugPrint("${error.code}: ${error.message}");
+    }
+  }
+
+  Future<void> performLink(String provider, List<String> scopes,
+      Map<String, String> parameters) async {
+    try {
+      await FirebaseAuthOAuth()
+          .linkExistingUserWithCredentials(provider, scopes, parameters);
+    } on PlatformException catch (error) {
+      /**
+       * The plugin has the following error codes:
+       * 1. FirebaseAuthError: FirebaseAuth related error
+       * 2. PlatformError: An platform related error
+       * 3. PluginError: An error from this plugin
+       */
+      debugPrint("${error.code}: ${error.message}");
+    }
+  }
 
   // Future<void> addItem({
   //   required String fName,
@@ -146,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
               //     email: emailController.text,
               //     password: passwordController.text);
 
-              final user = await auth
+              await auth
                   .createUserWithEmailAndPassword(
                       email: emailController.text,
                       password: passwordController.text)
@@ -257,7 +299,23 @@ class _SignUpPageState extends State<SignUpPage> {
               );
             }
           },
-        )
+        ),
+        Text(
+          'One Tap Sign In',
+          style: TextStyle(fontSize: 25.0),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SignInButton(Buttons.Microsoft, onPressed: () async {
+            await performLogin("microsoft.com", ["email"], {"locale": "en"});
+          }),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SignInButton(Buttons.Google, onPressed: () async {
+            await performLogin("google.com", ["email"], {"locale": "en"});
+          }),
+        ),
       ]),
     );
   }

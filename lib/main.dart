@@ -6,6 +6,8 @@ import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signInUpPage.dart';
+import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
+import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/temp/o_auth_test.dart';
 import 'package:sankofa_sme_exec/temp/sign_in_page.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
@@ -59,6 +61,7 @@ class MyApp extends StatelessWidget {
             title: 'Sankofa SME',
             theme: ThemeData.dark(),
             // initialRoute: '/',
+            // home: MediumTermSkillsPage(),
             home: SignInUpPage(),
             // home: MyTestApp(),
             routes: Navigate.routes,

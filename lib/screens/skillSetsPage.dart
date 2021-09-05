@@ -32,7 +32,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
   @override
   Widget build(BuildContext context) {
     void _openFilterDialog(listVal, title, index) async {
-      var selectedCountListInner = [];
+      // var selectedCountListInner = [];
       List<String> newList = [];
       for (var i = 0; i < listVal.length; i++) {
         newList.add(listVal[i]['Skill'].toString());
@@ -44,6 +44,7 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
       print('first ${selectedCountList!.length}, len: $len');
       await CustomFilterListDialog.display<String>(context,
           locationData: 'short term',
+          width: 500, //set for screen sizzes
           titleStr: title,
           listData: newList,
           selectedListData: selectedCountList,
@@ -85,21 +86,6 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
             //change skill sets color
             checkedIndex = index;
           });
-          //  fillList = selectedCountList!.toList();
-          //  if( count > 0){
-          //    fillList.clear();
-          //    fillList = selectedCountList!.toList();
-          //  }
-          //  for (var item in fillList) {
-
-          //     print('card added');
-          //   widgetList.add(
-          //     Card(
-          //       child: ListTile(
-          //     title: Text(item + ' '),
-          //     subtitle: Text(title + ' testtt '),
-          //   )));
-          //  }
 
           widgetList.add(Card(
               child: ListTile(
@@ -109,56 +95,15 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
 
           subSkill.add(
               {'title': '$title', 'count': selectedCountList!.length.toInt()});
-
-          // selectedCountListInner.add(selectedCountList!.sublist(count));
           applied = true;
           objList.add({
             'SkillSet': '$title',
             'Skill': '${[list]}'
           });
 
-          // // orderLines.add({'SkillSet': '$title', 'Skill': list});
-          // selectedTrack.add(selectedCountList!.length);
-
-          // print(selectedCountList!.getRange(
-          //         (selectedCountList!.length.toInt() - selectedTrack[count]).toInt(),
-          //         selectedCountList!.length.toInt()));
-
-          // if (orderLines.length > 0 ) {
-          //   print(selectedCountListInner);
-          //   print(selectedCountList!.length.toInt() - selectedTrack[count].toInt());
-          //   // print('list is ${selectedTrack[count-1]}, selected ${selectedCountList!.length}, count: $count, li is $li\n, start at ${(selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt()} ,sublist :${selectedCountList!.sublist(
-          //   //       (selectedCountList!.length.toInt() - selectedTrack[count-1]).toInt())}');
-          //   // orderLines.add({
-          //   //   'SkillSet': '$title',
-          //   //   'Skill': selectedCountList!.sublist(
-          //   //       selectedCountList!.length.toInt() - li)
-          //   // });
-
-          //   orderLines.add({'SkillSet': '$title', 'Skill': outterList});
-          // } else {
-          // }
-
           orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
-          // print(len);
-          // if (selectedCountList!.length == selectedTrack[0]) {
-          //   orderLines.add({'SkillSet': '$title', 'Skill': selectedCountList});
-          // } else {
-
-          //   li = selectedCountList!.sublist(
-          //       (selectedCountList!.length - selectedTrack[count]).toInt(),
-          //       selectedCountList!.length);
-          //       print("list is $li");
-          //   orderLines.add({
-          //     'SkillSet': '$title',
-          //     'Skill': selectedCountList!.sublist(
-          //         (selectedCountList!.length - selectedTrack[count]).toInt(),
-          //         selectedCountList!.length)
-          //   });
-          // }
         }
         count++;
-        // li = selectedTrack[count-1];
         Navigator.pop(context);
       });
     }
@@ -183,49 +128,104 @@ class _SkillSetsPageState extends State<SkillSetsPage> {
                     );
                   }
 
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        bool checked = index == checkedIndex;
-                        fillColor = Colors.transparent;
-                        DocumentSnapshot skills = snapshot.data!.docs[index];
-                        // print(skills['Skills'].toString());
-                        print(selectedCountList!.length);
-                        //countList.add(skills['Skills'][index]['Skill']);
-                        return GestureDetector(
-                          onTap: () {
-                            _openFilterDialog(
-                                skills['Skills'], skills['SkillSet'], index);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Card(
-                              // color: checked ? Colors.orange : fillColor,
-                              color: selectedIndexList.contains(index)
-                                  ? Colors.green
-                                  : Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(color: Colors.white70, width: 1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: EdgeInsets.all(10.0),
-                              child: Center(
-                                child: ListTile(
-                                  title: Text(
-                                    skills['SkillSet'],
-                                    textAlign: TextAlign.center,
+                  return LayoutBuilder(builder: (context, constraints) {
+                    if (constraints.maxWidth < 600) {
+                      return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0,
+                                  mainAxisSpacing: 0),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            bool checked = index == checkedIndex;
+                            fillColor = Colors.transparent;
+                            DocumentSnapshot skills =
+                                snapshot.data!.docs[index];
+                            // print(skills['Skills'].toString());
+                            print(selectedCountList!.length);
+                            //countList.add(skills['Skills'][index]['Skill']);
+                            return GestureDetector(
+                              onTap: () {
+                                _openFilterDialog(skills['Skills'],
+                                    skills['SkillSet'], index);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Card(
+                                  // color: checked ? Colors.orange : fillColor,
+                                  color: selectedIndexList.contains(index)
+                                      ? Colors.green
+                                      : Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Colors.white70, width: 1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: ListTile(
+                                      title: Text(
+                                        skills['SkillSet'],
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      });
+                            );
+                          });
+                    } else {
+                      return SizedBox(
+                        width: 800,
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 0,
+                                    mainAxisSpacing: 0),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              bool checked = index == checkedIndex;
+                              fillColor = Colors.transparent;
+                              DocumentSnapshot skills =
+                                  snapshot.data!.docs[index];
+                              // print(skills['Skills'].toString());
+                              print(selectedCountList!.length);
+                              //countList.add(skills['Skills'][index]['Skill']);
+                              return GestureDetector(
+                                onTap: () {
+                                  _openFilterDialog(skills['Skills'],
+                                      skills['SkillSet'], index);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Card(
+                                    // color: checked ? Colors.orange : fillColor,
+                                    color: selectedIndexList.contains(index)
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.white70, width: 1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    margin: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(
+                                          skills['SkillSet'],
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                  });
                 }),
           ),
           Flexible(

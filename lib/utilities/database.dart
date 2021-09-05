@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:random_password_generator/random_password_generator.dart';
 import 'package:sankofa_sme_exec/functions/randomchars.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
@@ -14,16 +16,21 @@ final CollectionReference _diagCollection =
 var currId = '';
 var userID;
 
+var ownerDocId;
+var ownerCompName;
+var collectionRef;
+final password = RandomPasswordGenerator();
+
 class Database {
   // static String? userUid;
 
   static Future<void> addItem({
     required String uid,
-    required String fName,
-    required String email,
+    required fName,
+    required email,
   }) async {
     DocumentReference documentReferencer =
-        _mainCollection.doc(uid); //should check if document exists in db or not
+        _mainCollection.doc(); //should check if document exists in db or not
 
     Map<String, dynamic> data = <String, dynamic>{
       "First Name": fName,
@@ -56,11 +63,20 @@ class Database {
     required String diagnName,
     required String location,
   }) async {
-    // DocumentReference documentReferencer = _mainCollection.doc(email).collection('Diagnostics').doc(); //should check if document exists in db or not
+    // DocumentReference documentReferencerMainDiag = _diagCollection
+    //     .doc(ownerDocId); //should check if document exists in db or not
+
+    // documentReferencerMainDiag.set({
+    //   "Company Name": ownerCompName,
+    //   "Id": ownerDocId,
+    //   "Date": FieldValue.serverTimestamp(),
+    // });
 
     if (location == 'short term') {
       DocumentReference documentReferencerShortTerm = _diagCollection
-          .doc(currID)
+          .doc(ownerDocId)
+          .collection(collectionRef)
+          .doc(currId)
           .collection('Strategic Skills')
           .doc(diagnName)
           .collection('Short Term Skills')
@@ -78,7 +94,9 @@ class Database {
       selectedCountList!.clear();
     } else {
       DocumentReference documentReferencerMedTerm = _diagCollection
-          .doc(currID)
+          .doc(ownerDocId)
+          .collection(collectionRef)
+          .doc(currId)
           .collection('Strategic Skills')
           .doc(diagnName)
           .collection('Medium Term Skills')
@@ -112,9 +130,20 @@ class Database {
 // print(query.id);
     for (var i = 0; i < teamLeadMailList.length; i++) {
       DocumentReference documentReferencerDiag = _diagCollection
-          .doc(currID)
+          .doc(ownerDocId)
           .collection('Team')
           .doc(teamLeadMailList[i]['name'].toString());
+
+      // DocumentReference documentReferencer = _mainCollection.doc();
+
+      await auth.createUserWithEmailAndPassword(
+          email: teamLeadMailList[i]['email'].toString(),
+          password: password.randomPassword(
+              letters: true,
+              numbers: true,
+              passwordLength: 7,
+              specialChar: true,
+              uppercase: true));
 
       Map<String, dynamic> data = <String, dynamic>{
         "Name": teamLeadMailList[i]['name'].toString(),
@@ -186,7 +215,6 @@ class Database {
   static Future<void> addDiagnostic({
     required String diagnName,
     required String email,
-    required String reference,
     required String from,
   }) async {
     // creates a diagnostic collection in the users
@@ -195,7 +223,7 @@ class Database {
 
     // creates a diagnostic collection in the diagnostic main collection
     DocumentReference documentReferencerDiag =
-        _diagCollection.doc(documentReferencer.id);
+        _diagCollection.doc(ownerDocId.toString());
 
     Map<String, dynamic> data = <String, dynamic>{
       "Start Date": FieldValue.serverTimestamp(),
@@ -204,12 +232,20 @@ class Database {
 
     Map<String, dynamic> diagData = <String, dynamic>{
       "Company Name": companyNameController.text,
-      "Reference": diagnName,
-      "Start Date": FieldValue.serverTimestamp(),
+      // "Reference": diagnName,
+      // "Start Date": FieldValue.serverTimestamp(),
       "id": documentReferencer.id,
-      "Stage": 'Assessment',
+      // "Stage": 'Assessment',
       "Code": stringCode,
     };
+
+    DocumentReference documentReferencerNewDiag =
+        _diagCollection.doc(ownerDocId).collection(diagnName).doc();
+
+    await documentReferencerNewDiag.set({
+      ...data,
+      "Stage": 'Assessment',
+    });
 
     await documentReferencer
         .set(data)
@@ -220,16 +256,17 @@ class Database {
     // FirebaseFirestore.instance.collection('Users').doc(userID).update({
     //   "Company": companyNameController.text,
     // });
-    FirebaseFirestore.instance.collection('Users').doc(userID).update({
-      "Company": companyNameController.text,
-    });
+    // FirebaseFirestore.instance.collection('Users').doc(userID).update({
+    //   "Company": companyNameController.text,
+    // });
 
     await documentReferencerDiag
         .set(diagData)
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
 
-    currId = documentReferencerDiag.id;
+    collectionRef = diagnName;
+    currId = documentReferencerNewDiag.id;
     gDocuId = documentReferencerDiag.id;
   }
 

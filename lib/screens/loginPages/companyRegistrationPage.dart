@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/signInPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
@@ -327,12 +329,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               secondarySec: _secSectorController.text,
                               email: emailController.text,
                             );
-                            Navigator.push(
-                                context,
+
+                            //popup showing user account successfully created
+                            //please sign in
+                            Fluttertoast.showToast(
+                                msg:
+                                    "User account successfully created, please sign in",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+
+                            Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => LandingPage(
-                                          from: '',
-                                        )));
+                                    builder: (context) => SignInPage()),
+                                (Route<dynamic> route) => false);
+
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => LandingPage(
+                            //               from: '',
+                            //             )));
                           },
                         ),
                       ),

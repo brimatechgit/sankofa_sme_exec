@@ -51,37 +51,37 @@ class _VerifyState extends State<Verify> {
           Text("an email has been sent to ${user.email} please verify"),
           ElevatedButton(
               onPressed: () async {
-                if (user.emailVerified) {
-                  FirebaseFirestore.instance
-                      .collection("Sectors")
-                      .get()
-                      .then((querySnapshot) {
-                    querySnapshot.docs.forEach((result) {
-                      //should add to the list immediately
-                      setState(() {
-                        sectors.add(result.get('Sector'));
-                      });
+                // if (user.emailVerified) {
+                FirebaseFirestore.instance
+                    .collection("Sectors")
+                    .get()
+                    .then((querySnapshot) {
+                  querySnapshot.docs.forEach((result) {
+                    //should add to the list immediately
+                    setState(() {
+                      sectors.add(result.get('Sector'));
                     });
                   });
+                });
 
-                  //add valid user to db
-                  await Database.addItem(
-                    uid: user.uid,
-                    fName: this.widget.nameContr.text,
-                    email: this.widget.emailContr.text,
+                //add valid user to db
+                await Database.addItem(
+                  uid: user.uid,
+                  fName: this.widget.nameContr,
+                  email: this.widget.emailContr,
+                );
+
+                //push to register only when sectoprs are filled?
+                if (sectors.isNotEmpty && auth.currentUser != null)
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => RegistrationPage(),
+                    ),
                   );
+                // }
 
-                  //push to register only when sectoprs are filled?
-                  if (sectors.isNotEmpty && auth.currentUser != null)
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => RegistrationPage(),
-                      ),
-                    );
-                }
-
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => RegistrationPage()));
+                // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //     builder: (context) => RegistrationPage()));
               },
               child: Text('I have Verified'))
         ],

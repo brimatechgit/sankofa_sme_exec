@@ -59,17 +59,16 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
         onPressed: () async {
           //push to skills page
           //create diagnostic in db
-          if (this.widget.from == '') {
-            await Database.addDiagnostic(
-                diagnName: assessNameController.text,
-                email: emailController.text,
-                reference: companyNameController.text,
-                from: this.widget.from);
-          } else {
-            await Database.addNewDiagnostic(
+          // if (this.widget.from == '') {
+          await Database.addDiagnostic(
               diagnName: assessNameController.text,
-            );
-          }
+              email: emailController.text,
+              from: this.widget.from);
+          // } else {
+          //   await Database.addNewDiagnostic(
+          //     diagnName: assessNameController.text,
+          //   );
+          // }
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => SkillSetsPage()));

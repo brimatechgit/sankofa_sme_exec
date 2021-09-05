@@ -22,7 +22,7 @@ import 'package:sankofa_sme_exec/widgets/custom_filter_list_dialog.dart';
 var midTermList = [];
 // var subSkill = [];
 // var fillList = [];
-  List<String>? selectedMidTermSkillList = [];
+List<String>? selectedMidTermSkillList = [];
 
 class MediumTermSkillsPage extends StatefulWidget {
   @override
@@ -43,12 +43,13 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
         newList.add(listVal[i]['Skill'].toString());
       }
       // selectedMidTermSkillList!.clear();
-      var len =
-          selectedMidTermSkillList!.length; // before we add anything to selected count
+      var len = selectedMidTermSkillList!
+          .length; // before we add anything to selected count
 
       print('first ${selectedMidTermSkillList!.length}, len: $len');
       await CustomFilterListDialog.display<String>(context,
           locationData: 'medium term',
+          width: 500,
           titleStr: title,
           listData: newList,
           selectedListData: selectedMidTermSkillList,
@@ -81,16 +82,9 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
             //list of selected skills
             selectedMidTermSkillList = List.from(list);
 
-            
             //change skill sets color
             checkedIndex = index;
           });
-
-        
-
-        
-
-         
         }
         Navigator.pop(context);
       });
@@ -100,7 +94,6 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
       appBar: AppBar(
         title: Text('Home'),
       ),
-
       body: Column(
         children: [
           Text('Please Select 3 or more company related medium term skills'),
@@ -116,61 +109,104 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
                     );
                   }
 
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0,
-                          mainAxisSpacing: 0),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        bool checked = index == checkedIndex;
-                        fillColor = Colors.transparent;
-                        DocumentSnapshot skills = snapshot.data!.docs[index];
-                        // print(skills['Skills'].toString());
-                        print(selectedMidTermSkillList!.length);
-                        //countList.add(skills['Skills'][index]['Skill']);
-                        return GestureDetector(
-                          onTap: () {
-                            _openFilterDialog(
-                                skills['Skills'], skills['SkillSet'], index);
-
-                            // setState(() {
-                            //   checkedIndex = index;
-                            // });
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => SkillSetsPage(
-                            //             title: skills['SkillSet'],
-                            //             skillSets: skills['Skills'],
-                            //           )),
-                            // );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Card(
-                              // color: checked ? Colors.orange : fillColor,
-                              color: selectedIndexList.contains(index)
-                                  ? Colors.green
-                                  : Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(color: Colors.white70, width: 1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: EdgeInsets.all(10.0),
-                              child: Center(
-                                child: ListTile(
-                                  title: Text(
-                                    skills['SkillSet'],
-                                    textAlign: TextAlign.center,
+                  return LayoutBuilder(builder: (context, constraints) {
+                    if (constraints.maxWidth < 600) {
+                      return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0,
+                                  mainAxisSpacing: 0),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            bool checked = index == checkedIndex;
+                            fillColor = Colors.transparent;
+                            DocumentSnapshot skills =
+                                snapshot.data!.docs[index];
+                            // print(skills['Skills'].toString());
+                            print(selectedMidTermSkillList!.length);
+                            //countList.add(skills['Skills'][index]['Skill']);
+                            return GestureDetector(
+                              onTap: () {
+                                _openFilterDialog(skills['Skills'],
+                                    skills['SkillSet'], index);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Card(
+                                  // color: checked ? Colors.orange : fillColor,
+                                  color: selectedIndexList.contains(index)
+                                      ? Colors.green
+                                      : Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Colors.white70, width: 1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: ListTile(
+                                      title: Text(
+                                        skills['SkillSet'],
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      });
+                            );
+                          });
+                    } else {
+                      return SizedBox(
+                        width: 900,
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 0,
+                                    mainAxisSpacing: 0),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              bool checked = index == checkedIndex;
+                              fillColor = Colors.transparent;
+                              DocumentSnapshot skills =
+                                  snapshot.data!.docs[index];
+                              // print(skills['Skills'].toString());
+                              print(selectedMidTermSkillList!.length);
+                              //countList.add(skills['Skills'][index]['Skill']);
+                              return GestureDetector(
+                                onTap: () {
+                                  _openFilterDialog(skills['Skills'],
+                                      skills['SkillSet'], index);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Card(
+                                    // color: checked ? Colors.orange : fillColor,
+                                    color: selectedIndexList.contains(index)
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.white70, width: 1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    margin: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: ListTile(
+                                        title: Text(
+                                          skills['SkillSet'],
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                  });
                 }),
           ),
           Flexible(
@@ -185,7 +221,9 @@ class _MediumTermSkillsPageState extends State<MediumTermSkillsPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SelectedMediumSkillsPage(totalSkills: selectedMidTermSkillList!,)),
+                                builder: (context) => SelectedMediumSkillsPage(
+                                      totalSkills: selectedMidTermSkillList!,
+                                    )),
                           );
                         },
                         child: Text(
