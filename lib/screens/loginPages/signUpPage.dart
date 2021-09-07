@@ -300,8 +300,11 @@ class _SignUpPageState extends State<SignUpPage> {
             }
           },
         ),
+        SizedBox(
+          height: 15.0,
+        ),
         Text(
-          'One Tap Sign In',
+          'One Tap Sign Up',
           style: TextStyle(fontSize: 25.0),
         ),
         Padding(

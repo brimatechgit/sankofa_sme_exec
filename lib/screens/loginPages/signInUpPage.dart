@@ -46,34 +46,47 @@ class SignInUpPage extends StatelessWidget {
       ),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text('Welcome to sankofa SME,'),
+          SizedBox(
+              width: 250, height: 250, child: Image.asset('/diagnostic.png')),
           SizedBox(height: 25.0),
-          ElevatedButton(
-            child: Text('Sign Up'),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()));
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              ' - OR - ',
-              style: TextStyle(
-                fontSize: 22.0,
-              ),
-              textAlign: TextAlign.center,
+          SizedBox(
+            width: 250,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                  ),
+                  padding: EdgeInsets.all(22)),
+              child: Text('Sign Up'),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()));
+              },
             ),
           ),
-          ElevatedButton(
-            child: Text('Sign In'),
-            onPressed: () {
-              // ignore: unnecessary_statements
-              // send();
-              sendEmail('tshepang@sankofa.digital');
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignInPage()));
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  'Already have an account? ',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              TextButton(
+                child: Text('Sign In'),
+                onPressed: () {
+                  // ignore: unnecessary_statements
+                  // send();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
+                },
+              )
+            ],
           ),
         ]),
       ),
