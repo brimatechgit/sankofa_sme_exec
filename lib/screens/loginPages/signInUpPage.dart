@@ -47,16 +47,16 @@ class SignInUpPage extends StatelessWidget {
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(
-              width: 250, height: 250, child: Image.asset('/diagnostic.png')),
+              width: 250, height: 250, child: Image.asset('diagnostic.png')),
           SizedBox(height: 25.0),
           SizedBox(
             width: 250,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                    borderRadius: BorderRadius.circular(25), // <-- Radius
                   ),
-                  padding: EdgeInsets.all(22)),
+                  padding: EdgeInsets.all(15)),
               child: Text('Sign Up'),
               onPressed: () {
                 Navigator.push(context,
@@ -68,17 +68,22 @@ class SignInUpPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Text(
                   'Already have an account? ',
                   style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 15.0,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
               TextButton(
-                child: Text('Sign In'),
+                child: Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
                 onPressed: () {
                   // ignore: unnecessary_statements
                   // send();

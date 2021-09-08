@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_password_generator/random_password_generator.dart';
 import 'package:sankofa_sme_exec/functions/randomchars.dart';

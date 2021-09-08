@@ -72,7 +72,7 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                         //get self assessment results from db
                                         FirebaseFirestore.instance
                                             .collection(
-                                                '/Diagnostics/4U5r5ImEHDJ5iszKMsdi/Team')
+                                                '/Diagnostics/${this.widget.docID}/Team')
                                             .get()
                                             .then((querySnapshot) {
                                           querySnapshot.docs.forEach((result) {

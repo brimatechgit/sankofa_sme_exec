@@ -141,13 +141,19 @@ class _SignInPageState extends State<SignInPage> {
           if (auth.currentUser == null) {
             print('no user signed in');
           } else {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => LandingPage(
-                          from: 'sign-in',
-                          docID: auth.currentUser!.uid,
-                        )),
-                (Route<dynamic> route) => false);
+            FirebaseFirestore.instance
+                .collection("Users")
+                .where("email",
+                    isEqualTo: auth.currentUser!.email) //change email here
+                .get()
+                .then((value) => value.docs.forEach((element) {
+                      userID = element.id;
+                      ownerDocId = element.id;
+                      print(element.id);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) =>
+                              LandingPage(from: 'sign-in', docID: element.id)));
+                    }));
 
             // Navigator.of(context).pushReplacement(MaterialPageRoute(
             //     builder: (context) => LandingPage(
@@ -175,212 +181,214 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         title: Text('Sign In'),
       ),
-      body: Center(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // _EmailLinkSignInSection(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Enter Email',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // _EmailLinkSignInSection(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  TextFieldWidget(
-                      textController: _emailController,
-                      hint: 'Email@example.com',
-                      icon: Icons.email,
-                      type: TextInputType.emailAddress,
-                      obscure: false),
-                  Text(
-                    'Enter Password',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                    TextFieldWidget(
+                        textController: _emailController,
+                        hint: 'Email@example.com',
+                        icon: Icons.email,
+                        type: TextInputType.emailAddress,
+                        obscure: false),
+                    Text(
+                      'Password',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  TextFieldWidget(
-                      textController: _passwordController,
-                      hint: 'password',
-                      icon: Icons.lock,
-                      type: TextInputType.visiblePassword,
-                      obscure: true),
-                  SizedBox(height: 30.0),
-                  // _buildOTP(),
-                  // SizedBox(
-                  //   height: 30.0,
-                  // ),
-                  // SizedBox(height: 30.0),
-                  // // _buildPassword(),
-                  // // SizedBox(
-                  // //   height: 30.0,
+                    TextFieldWidget(
+                        textController: _passwordController,
+                        hint: 'password',
+                        icon: Icons.lock,
+                        type: TextInputType.visiblePassword,
+                        obscure: true),
+                    SizedBox(height: 30.0),
+                    // _buildOTP(),
+                    // SizedBox(
+                    //   height: 30.0,
+                    // ),
+                    // SizedBox(height: 30.0),
+                    // // _buildPassword(),
+                    // // SizedBox(
+                    // //   height: 30.0,
 
-                  // // ),
+                    // // ),
 
-                  Center(child: _buildLoginBtn(context)),
-                ],
-              ),
+                    Center(child: _buildLoginBtn(context)),
+                  ],
+                ),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('One Tap Sign In'),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  SignInButton(
-                    Buttons.Google,
-                    onPressed: () async {
-                      setState(() {
-                        _isSigningIn = true;
-                      });
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('One Tap Sign In'),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    SignInButton(
+                      Buttons.Google,
+                      onPressed: () async {
+                        setState(() {
+                          _isSigningIn = true;
+                        });
 
-                      // TODO: Add a method call to the Google Sign-In authentication
-                      User? user = await Authentication.signInWithGoogle(
-                          context: context);
+                        // TODO: Add a method call to the Google Sign-In authentication
+                        User? user = await Authentication.signInWithGoogle(
+                            context: context);
 
-                      setState(() {
-                        _isSigningIn = false;
-                      });
-                      // if (user != null) {
-                      //   Navigator.of(context).pushReplacement(
-                      //     MaterialPageRoute(
-                      //       builder: (context) => UserInfoScreen(
-                      //         user: user,
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
-                      if (user != null) {
-                        FirebaseFirestore.instance
-                            .collection("Users")
-                            .where("email",
-                                isEqualTo: user.email) //change email here
-                            .get()
-                            .then((value) => value.docs.forEach((element) {
-                                  userID = element.id;
-                                  ownerDocId = element.id;
-                                  print(element.id);
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => LandingPage(
-                                              from: 'sign-in',
-                                              docID: element.id)));
-                                }));
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-//                   SignInButton(
-//                     Buttons.Facebook,
-//                     onPressed: () async {
-// //                   if (kIsWeb) {
-// //                     FacebookPermissions? permissions =
-// //                         await FacebookAuth.instance.permissions;
-// // // or FacebookAuth.i.permissions
+                        setState(() {
+                          _isSigningIn = false;
+                        });
+                        // if (user != null) {
+                        //   Navigator.of(context).pushReplacement(
+                        //     MaterialPageRoute(
+                        //       builder: (context) => UserInfoScreen(
+                        //         user: user,
+                        //       ),
+                        //     ),
+                        //   );
+                        // }
+                        if (user != null) {
+                          FirebaseFirestore.instance
+                              .collection("Users")
+                              .where("email",
+                                  isEqualTo: user.email) //change email here
+                              .get()
+                              .then((value) => value.docs.forEach((element) {
+                                    userID = element.id;
+                                    ownerDocId = element.id;
+                                    print(element.id);
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) => LandingPage(
+                                                from: 'sign-in',
+                                                docID: element.id)));
+                                  }));
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    //                   SignInButton(
+                    //                     Buttons.Facebook,
+                    //                     onPressed: () async {
+                    // //                   if (kIsWeb) {
+                    // //                     FacebookPermissions? permissions =
+                    // //                         await FacebookAuth.instance.permissions;
+                    // // // or FacebookAuth.i.permissions
 
-// //                   }
+                    // //                   }
 
-//                       final LoginResult result = await FacebookAuth.instance
-//                           .login(); // by default we request the email and the public profile
-// // or FacebookAuth.i.login()
+                    //                       final LoginResult result = await FacebookAuth.instance
+                    //                           .login(); // by default we request the email and the public profile
+                    // // or FacebookAuth.i.login()
 
-//                       if (result.status == LoginStatus.success) {
-//                         // you are logged
-//                         final AccessToken accessToken = result.accessToken!;
-//                         final userData = await FacebookAuth.instance
-//                             .getUserData(fields: 'name,email, picture');
+                    //                       if (result.status == LoginStatus.success) {
+                    //                         // you are logged
+                    //                         final AccessToken accessToken = result.accessToken!;
+                    //                         final userData = await FacebookAuth.instance
+                    //                             .getUserData(fields: 'name,email, picture');
 
-//                         //put user data in the users collection in the db
+                    //                         //put user data in the users collection in the db
 
-//                         //   Navigator.of(context).pushReplacement(
-//                         //   MaterialPageRoute(
-//                         //     builder: (context) => UserInfoScreen(
-//                         //       user: userData,
-//                         //     ),
-//                         //   ),
-//                         // );
-//                       }
-//                     },
-//                   ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  SignInButton(Buttons.Microsoft, onPressed: () async {
-                    await performLogin(
-                        "microsoft.com", ["email"], {"locale": "en"});
-                  }),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  // SignInButton(Buttons.Email, onPressed: () {
-                  //   //navigate to password email page
-                  // }),
-                ],
-              ),
+                    //                         //   Navigator.of(context).pushReplacement(
+                    //                         //   MaterialPageRoute(
+                    //                         //     builder: (context) => UserInfoScreen(
+                    //                         //       user: userData,
+                    //                         //     ),
+                    //                         //   ),
+                    //                         // );
+                    //                       }
+                    //                     },
+                    //                   ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    SignInButton(Buttons.Microsoft, onPressed: () async {
+                      await performLogin(
+                          "microsoft.com", ["email"], {"locale": "en"});
+                    }),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    // SignInButton(Buttons.Email, onPressed: () {
+                    //   //navigate to password email page
+                    // }),
+                  ],
+                ),
 
-              // Flexible(
+                // Flexible(
 
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Text('Please enter email'),
-              //       ),
-              //       Container(
-              //         alignment: Alignment.centerLeft,
-              //         decoration: kBoxDecorationStyle,
-              //         height: 60.0,
-              //         child: TextField(
-              //           controller: _emailController,
-              //           keyboardType: TextInputType.text,
-              //           style: TextStyle(
-              //             color: Colors.white,
-              //             fontFamily: 'OpenSans',
-              //           ),
-              //           decoration: InputDecoration(
-              //             border: InputBorder.none,
-              //             contentPadding: EdgeInsets.only(top: 14.0),
-              //             prefixIcon: Icon(
-              //               Icons.email,
-              //               color: Colors.white,
-              //             ),
-              //             hintText: 'email@email.com',
-              //             hintStyle: kHintTextStyle,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // Flexible(
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: Text('Please enter email'),
+                //       ),
+                //       Container(
+                //         alignment: Alignment.centerLeft,
+                //         decoration: kBoxDecorationStyle,
+                //         height: 60.0,
+                //         child: TextField(
+                //           controller: _emailController,
+                //           keyboardType: TextInputType.text,
+                //           style: TextStyle(
+                //             color: Colors.white,
+                //             fontFamily: 'OpenSans',
+                //           ),
+                //           decoration: InputDecoration(
+                //             border: InputBorder.none,
+                //             contentPadding: EdgeInsets.only(top: 14.0),
+                //             prefixIcon: Icon(
+                //               Icons.email,
+                //               color: Colors.white,
+                //             ),
+                //             hintText: 'email@email.com',
+                //             hintStyle: kHintTextStyle,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // Flexible(
 
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(12.0),
-              //       child: ElevatedButton(
-              //           onPressed: () {
-              //             Navigator.push(
-              //                 context,
-              //                 MaterialPageRoute(
-              //                     builder: (context) => OtpPage(
-              //                           fromPage: 'signIn',
-              //                         )));
-              //           },
-              //           child: Text('Submit')),
-              //     ))
-            ]),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(12.0),
+                //       child: ElevatedButton(
+                //           onPressed: () {
+                //             Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                     builder: (context) => OtpPage(
+                //                           fromPage: 'signIn',
+                //                         )));
+                //           },
+                //           child: Text('Submit')),
+                //     ))
+              ]),
+        ),
       ),
     );
   }

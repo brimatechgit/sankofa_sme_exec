@@ -97,7 +97,14 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Please name Diagnostic with memorable a reference'),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Please name Diagnostic with a memorable reference',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 SizedBox(
                   height: 12.0,
                 ),
@@ -105,13 +112,28 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Who is this for'),
-                    Text('What is the purpose of a diagnostic'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.report_problem),
+                        Text(
+                          'Who is this for',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.report_problem),
+                        Text(
+                          'What is the purpose of a diagnostic',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
                   ],
                 )),
-                SizedBox(
-                  height: 12.0,
-                ),
                 SizedBox(
                   height: 12.0,
                 ),
@@ -129,6 +151,10 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
                   )
                 ]),
                 _buildOTP('Finance', assessNameController),
+
+                SizedBox(
+                  height: 12.0,
+                ),
                 Text('Please enter Private Reference'),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(
