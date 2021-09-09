@@ -65,11 +65,11 @@ class _VerifyState extends State<Verify> {
                 });
 
                 //add valid user to db
-                await Database.addItem(
-                  uid: user.uid,
-                  fName: this.widget.nameContr,
-                  email: this.widget.emailContr,
-                );
+                // await Database.addItem(
+                //   uid: user.uid,
+                //   fName: this.widget.nameContr,
+                //   email: this.widget.emailContr,
+                // );
 
                 //push to register only when sectoprs are filled?
                 if (sectors.isNotEmpty && auth.currentUser != null)

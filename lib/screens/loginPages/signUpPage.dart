@@ -33,10 +33,15 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       await FirebaseAuthOAuth()
           .openSignInFlow(provider, scopes, parameters)
-          .then((value) => {
+          .then((value) async => {
+                await Database.addItem(
+                  uid: value!.uid,
+                  fName: value.displayName,
+                  email: value.email,
+                ),
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => Verify(
-                          nameContr: value!.displayName,
+                          nameContr: value.displayName,
                           emailContr: value.email,
                         )))
               });
@@ -195,6 +200,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         password: passwordController.text)
                     .then((user) async {
                   if (user != null) {
+                    await Database.addItem(
+                      uid: auth.currentUser!.uid,
+                      fName: auth.currentUser!.displayName,
+                      email: auth.currentUser!.email,
+                    );
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => Verify(
                               nameContr: nameController,
