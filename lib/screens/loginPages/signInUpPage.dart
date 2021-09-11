@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signInPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
-
-
 
 //first page all users get tp
 class SignInUpPage extends StatelessWidget {
   const SignInUpPage({Key? key}) : super(key: key);
+
+  sendEmail(String emailAddress) async {
+    final Email email = Email(
+      body: 'Hello World',
+      subject: 'Testing email on flutter',
+      recipients: [emailAddress],
+      //cc: ['cc@example.com'],
+      //bcc: ['bcc@example.com'],
+      //attachmentPaths: ['/path/to/attachment.zip'],
+      isHTML: false,
+    );
+  }
+
+  Future<void> send() async {
+    final Email email = Email(
+      body: 'Email body',
+      subject: 'Email subject',
+      recipients: ['tshepang@sankofa.digital'],
+      isHTML: false,
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+      print(platformResponse);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,35 +45,53 @@ class SignInUpPage extends StatelessWidget {
         title: Text('Sign in'),
       ),
       body: Center(
-        child: Column(
-         
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Text('Welcome to sankofa SME,'),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          SizedBox(
+              width: 250, height: 250, child: Image.asset('diagnostic.png')),
           SizedBox(height: 25.0),
-          ElevatedButton(
-            child: Text('Sign Up'),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SignUpPage()));
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              ' - OR - ',
-              style: TextStyle(
-                fontSize: 22.0,
-              ),
-              textAlign: TextAlign.center,
+          SizedBox(
+            width: 250,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25), // <-- Radius
+                  ),
+                  padding: EdgeInsets.all(15)),
+              child: Text('Sign Up'),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()));
+              },
             ),
           ),
-          ElevatedButton(
-            child: Text('Sign In'),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SignInPage()));
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  'Already have an account? ',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              TextButton(
+                child: Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                onPressed: () {
+                  // ignore: unnecessary_statements
+                  // send();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
+                },
+              )
+            ],
           ),
         ]),
       ),

@@ -5,11 +5,14 @@ import 'package:sankofa_sme_exec/screens/diagnosisGraphsPage.dart';
 import 'package:sankofa_sme_exec/screens/diagnosisPathPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 
 class DiagnosticsPage extends StatefulWidget {
   final docID;
-  const DiagnosticsPage({Key? key, required this.docID}) : super(key: key);
+  final from;
+  const DiagnosticsPage({Key? key, required this.docID, required this.from})
+      : super(key: key);
 
   @override
   _DiagnosticsPageState createState() => _DiagnosticsPageState();
@@ -66,6 +69,32 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                                     //countList.add(skills['Skills'][index]['Skill']);
                                     return GestureDetector(
                                       onTap: () {
+                                        //get self assessment results from db
+                                        FirebaseFirestore.instance
+                                            .collection(
+                                                '/Diagnostics/${this.widget.docID}/Team')
+                                            .get()
+                                            .then((querySnapshot) {
+                                          querySnapshot.docs.forEach((result) {
+                                            //should add to the list immediately
+
+                                            print(result.get(
+                                                'Self Assessment Result Medium Term'));
+                                            if (result.get(
+                                                    'Self Assessment Result Medium Term') !=
+                                                '') {
+                                              ++completed;
+
+                                              print(
+                                                  'Completed Vals $completed');
+                                            } else {
+                                              ++incomplete;
+                                              print(
+                                                  'InCompleted Vals $incomplete');
+                                            }
+                                          });
+                                        });
+
                                         //should navigate to graph page
 
                                         Navigator.push(
@@ -212,7 +241,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AssessmNamePage()));
+                              builder: (context) => AssessmNamePage(
+                                    from: this.widget.from,
+                                  )));
                     },
                     // child: Text('Diagnosis'),
                   ))

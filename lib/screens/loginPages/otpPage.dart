@@ -88,8 +88,8 @@ class _OtpPageState extends State<OtpPage> {
 
                 ) {
               //add valid user to db
-              await Database.addItem(
-                  fName: nameController.text, email: this.widget.emailC);
+              // await Database.addItem(
+              //     fName: nameController.text, email: this.widget.emailC);
 
               //push to register only when sectoprs are filled?
               if (sectors.isNotEmpty)

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/signInPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
@@ -19,8 +21,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  
-  
   final _pSectorController = TextEditingController();
   final _secSectorController = TextEditingController();
   @override
@@ -73,14 +73,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   SizedBox(height: 20.0),
                   Container(
-                    
                     decoration: BoxDecoration(
                         border:
                             Border.all(color: Colors.blueAccent, width: 0.5),
                         borderRadius: BorderRadius.circular(15.0)),
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: DropdownButton<String>(
-                      hint: priSectordropdownValue == null ? Text('Select Primary Sector') : Text(priSectordropdownValue),
+                      hint: priSectordropdownValue == null
+                          ? Text('Select Primary Sector')
+                          : Text(priSectordropdownValue),
                       // value: priSectordropdownValue,
                       icon: Icon(
                         Icons.arrow_downward,
@@ -94,10 +95,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       onChanged: (String? newValue) {
                         setState(() {
                           priSectordropdownValue = newValue!;
-                          
                         });
                       },
-                      items: sectors.map<DropdownMenuItem<String>>((String value) {
+                      items:
+                          sectors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -112,31 +113,32 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   SizedBox(height: 20.0),
                   //should be a dropdown
-            //       DropdownButton<String>(
-            //         value: dropdownValue,
-            //         hint: Text('Please choose a sector'),
-            //         items: sectors.map((value) {
-            //           return DropdownMenuItem<String>(
-            //             value: value,
-            //             child: Text(value),
-            //           );
-            //         }).toList(),
-            //        onChanged: (newValue) {
-            //   setState(() {
-            //     dropdownValue = newValue.toString();
-            //   });
-            // },
-            //       )
+                  //       DropdownButton<String>(
+                  //         value: dropdownValue,
+                  //         hint: Text('Please choose a sector'),
+                  //         items: sectors.map((value) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: value,
+                  //             child: Text(value),
+                  //           );
+                  //         }).toList(),
+                  //        onChanged: (newValue) {
+                  //   setState(() {
+                  //     dropdownValue = newValue.toString();
+                  //   });
+                  // },
+                  //       )
 
-            Container(
-                    
+                  Container(
                     decoration: BoxDecoration(
                         border:
                             Border.all(color: Colors.blueAccent, width: 0.5),
                         borderRadius: BorderRadius.circular(15.0)),
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: DropdownButton<String>(
-                      hint: secSectordropdownValue == null ? Text('Select Secondary Sector') : Text(secSectordropdownValue),
+                      hint: secSectordropdownValue == null
+                          ? Text('Select Secondary Sector')
+                          : Text(secSectordropdownValue),
                       // value: secSectordropdownValue,
                       icon: Icon(
                         Icons.arrow_downward,
@@ -155,7 +157,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           });
                         });
                       },
-                      items: sectors.map<DropdownMenuItem<String>>((String value2) {
+                      items: sectors
+                          .map<DropdownMenuItem<String>>((String value2) {
                         return DropdownMenuItem<String>(
                           value: value2,
                           child: Text(value2),
@@ -326,10 +329,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               secondarySec: _secSectorController.text,
                               email: emailController.text,
                             );
-                            Navigator.push(
-                                context,
+
+                            //popup showing user account successfully created
+                            //please sign in
+                            Fluttertoast.showToast(
+                                msg:
+                                    "User account successfully created, please sign in",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+
+                            Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => LandingPage()));
+                                    builder: (context) => SignInPage()),
+                                (Route<dynamic> route) => false);
+
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => LandingPage(
+                            //               from: '',
+                            //             )));
                           },
                         ),
                       ),

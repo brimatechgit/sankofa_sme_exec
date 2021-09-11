@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sankofa_sme_exec/screens/graphPages/graphsPage.dart';
 import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
+import 'package:sankofa_sme_exec/utilities/globalVars.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DiagnosisGraphPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
   late List<GDPData> _selfChartData;
   late List<GDPData> _teamChartData;
   late TooltipBehavior _tooltipBehavior;
+  String finalizeBtn = 'Finalize and Proceed';
+
   @override
   void initState() {
     _selfChartData = getSelfChartData();
@@ -36,6 +39,10 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
         child: SingleChildScrollView(
           child: Column(children: [
             // self assessments graph here
+            //have a counter function that checks all self assessments in db, if selfassessment is empty,
+            //increment not completed value of the chart
+
+            //soooo futurebuilder??
             Card(
               child: SfCircularChart(
                 title: ChartTitle(text: 'Self Assessment'),
@@ -98,16 +105,25 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text('Finalize and Proceed'),
-                  onPressed: () {
+                  child: Text(finalizeBtn),
+                  onPressed: () async {
+                    //db should finalize the whole assessment
+                    await Database.updateDiagnostic(
+                      reference: this.widget.ref,
+                    );
+                    //change button text to generate report
+                    setState(() {
+                      finalizeBtn = 'Generate Report';
+                    });
+
                     //navigate to filteredGraphs page
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => SkillsGraphs(
-                                  docuID: this.widget.ref,
-                                )),
-                        ModalRoute.withName('/'));
+                    // Navigator.pushAndRemoveUntil(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (BuildContext context) => SkillsGraphs(
+                    //               docuID: this.widget.ref,
+                    //             )),
+                    //     ModalRoute.withName('/'));
                   },
                 ),
               ),
@@ -143,8 +159,8 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
   //should be fetching data from db
   List<GDPData> getSelfChartData() {
     final List<GDPData> chartData = [
-      GDPData('Completed', 2),
-      GDPData('InComplete', 0),
+      GDPData('Completed', completed),
+      GDPData('InComplete', incomplete),
     ];
     return chartData;
   }

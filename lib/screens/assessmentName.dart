@@ -5,17 +5,17 @@ import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/utilities/constants.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
 
+final assessNameController = TextEditingController(); // would be a public ref
 
-final assessNameController = TextEditingController();   // would be a public ref
 class AssessmNamePage extends StatefulWidget {
-  const AssessmNamePage({Key? key}) : super(key: key);
+  final from;
+  const AssessmNamePage({Key? key, required this.from}) : super(key: key);
 
   @override
   _AssessmNamePageState createState() => _AssessmNamePageState();
 }
 
 class _AssessmNamePageState extends State<AssessmNamePage> {
- 
   final _privateRefController = TextEditingController();
   final _publicRefController = TextEditingController();
 
@@ -59,11 +59,16 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
         onPressed: () async {
           //push to skills page
           //create diagnostic in db
+          // if (this.widget.from == '') {
           await Database.addDiagnostic(
-            diagnName: assessNameController.text,
-            email: emailController.text,
-            reference: companyNameController.text,
-          );
+              diagnName: assessNameController.text,
+              email: emailController.text,
+              from: this.widget.from);
+          // } else {
+          //   await Database.addNewDiagnostic(
+          //     diagnName: assessNameController.text,
+          //   );
+          // }
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => SkillSetsPage()));
@@ -89,72 +94,99 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Please name Diagnostic with memorable a reference'),
-            SizedBox(
-              height: 12.0,
-            ),
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Who is this for'),
-                Text('What is the purpose of a diagnostic'),
-              ],
-            )),
-            SizedBox(
-              height: 12.0,
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Please name Diagnostic with a memorable reference',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 12.0,
+                ),
+                Container(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.report_problem),
+                        Text(
+                          'Who is this for',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.report_problem),
+                        Text(
+                          'What is the purpose of a diagnostic',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 12.0,
+                ),
 
-            Text('Please enter Public Reference'),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
-                Icons.info,
-                color: Colors.blueGrey,
-                size: 12.0,
-              ),
-              Text(
-                'Visible to every participant',
-                style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
-              )
-            ]),
-            _buildOTP('Finance', assessNameController),
-            Text('Please enter Private Reference'),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
-                Icons.info,
-                color: Colors.blueGrey,
-                size: 12.0,
-              ),
-              Text('Visible only to you',
-                  style: TextStyle(color: Colors.blueGrey, fontSize: 12.0))
-            ]),
-            SizedBox(
-              height: 12.0,
-            ),
-            _buildOTP('Private ref', _privateRefController),
-            // Text('Please enter Public Reference'),
-            // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            //   Icon(
-            //     Icons.info,
-            //     color: Colors.blueGrey,
-            //     size: 12.0,
-            //   ),
-            //   Text(
-            //     'Visible to every participant',
-            //     style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
-            //   )
-            // ]),
-            // SizedBox(
-            //   height: 12.0,
-            // ),
-            // _buildOTP('Public ref', _publicRefController),
-            _buildLoginBtn(context),
-          ]),
+                Text('Please enter Public Reference'),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(
+                    Icons.info,
+                    color: Colors.blueGrey,
+                    size: 12.0,
+                  ),
+                  Text(
+                    'Visible to every participant',
+                    style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
+                  )
+                ]),
+                _buildOTP('Finance', assessNameController),
+
+                SizedBox(
+                  height: 12.0,
+                ),
+                Text('Please enter Private Reference'),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(
+                    Icons.info,
+                    color: Colors.blueGrey,
+                    size: 12.0,
+                  ),
+                  Text('Visible only to you',
+                      style: TextStyle(color: Colors.blueGrey, fontSize: 12.0))
+                ]),
+                SizedBox(
+                  height: 12.0,
+                ),
+                _buildOTP('Private ref', _privateRefController),
+                // Text('Please enter Public Reference'),
+                // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                //   Icon(
+                //     Icons.info,
+                //     color: Colors.blueGrey,
+                //     size: 12.0,
+                //   ),
+                //   Text(
+                //     'Visible to every participant',
+                //     style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
+                //   )
+                // ]),
+                // SizedBox(
+                //   height: 12.0,
+                // ),
+                // _buildOTP('Public ref', _publicRefController),
+                _buildLoginBtn(context),
+              ]),
         ),
       ),
     );
