@@ -9,7 +9,14 @@ final assessNameController = TextEditingController(); // would be a public ref
 
 class AssessmNamePage extends StatefulWidget {
   final from;
-  const AssessmNamePage({Key? key, required this.from}) : super(key: key);
+  final userEmail;
+  final userComp;
+  const AssessmNamePage(
+      {Key? key,
+      required this.from,
+      required this.userEmail,
+      required this.userComp})
+      : super(key: key);
 
   @override
   _AssessmNamePageState createState() => _AssessmNamePageState();
@@ -61,14 +68,10 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
           //create diagnostic in db
           // if (this.widget.from == '') {
           await Database.addDiagnostic(
+              compName: this.widget.userComp,
               diagnName: assessNameController.text,
-              email: emailController.text,
+              email: this.widget.userEmail,
               from: this.widget.from);
-          // } else {
-          //   await Database.addNewDiagnostic(
-          //     diagnName: assessNameController.text,
-          //   );
-          // }
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => SkillSetsPage()));
@@ -150,8 +153,36 @@ class _AssessmNamePageState extends State<AssessmNamePage> {
                     style: TextStyle(color: Colors.blueGrey, fontSize: 12.0),
                   )
                 ]),
-                _buildOTP('Finance', assessNameController),
-
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 10.0),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      decoration: kBoxDecorationStyle,
+                      height: 60.0,
+                      child: TextField(
+                        controller: assessNameController,
+                        keyboardType: TextInputType.text,
+                        obscureText: false,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 14.0),
+                          prefixIcon: Icon(
+                            Icons.work,
+                            color: Colors.white,
+                          ),
+                          hintText: 'i.e. Finance',
+                          hintStyle: kHintTextStyle,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(
                   height: 12.0,
                 ),

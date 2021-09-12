@@ -151,8 +151,12 @@ class _SignInPageState extends State<SignInPage> {
                       ownerDocId = element.id;
                       print(element.id);
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) =>
-                              LandingPage(from: 'sign-in', docID: element.id)));
+                          builder: (context) => LandingPage(
+                                from: 'sign-in',
+                                docID: element.id,
+                                userEmail: element.get('email'),
+                                userComp: element.get('Company'),
+                              )));
                     }));
 
             // Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -277,11 +281,16 @@ class _SignInPageState extends State<SignInPage> {
                                     userID = element.id;
                                     ownerDocId = element.id;
                                     print(element.id);
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
                                             builder: (context) => LandingPage(
-                                                from: 'sign-in',
-                                                docID: element.id)));
+                                                  from: 'sign-in',
+                                                  docID: element.get('id'),
+                                                  userEmail:
+                                                      element.get('email'),
+                                                  userComp:
+                                                      element.get('Company'),
+                                                )));
                                   }));
                         }
                       },

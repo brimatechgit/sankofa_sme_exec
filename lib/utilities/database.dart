@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:random_password_generator/random_password_generator.dart';
 import 'package:sankofa_sme_exec/functions/randomchars.dart';
+import 'package:sankofa_sme_exec/screens/assessmentName.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signUpPage.dart';
 import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
@@ -117,64 +119,134 @@ class Database {
   static Future<void> addTeamLeaders({
     // required List mailList,
     required String currID,
+    required String docRef,
   }) async {
     // DocumentReference documentReferencer = _mainCollection.doc(email).collection('Diagnostics').doc(); //should check if document exists in db or not
 // var query = FirebaseFirestore.instance.collection('Diagnostics').where("Company Name" == compName);
 
 // print(query.id);
     for (var i = 0; i < teamLeadMailList.length; i++) {
-      DocumentReference documentReferencerDiag =
-          _diagCollection.doc(ownerDocId).collection('Team').doc();
+      DocumentReference documentReferencerDiag = _diagCollection
+          .doc(ownerDocId)
+          .collection('Team')
+          .doc(teamLeadMailList[i]['email'].toString());
+      DocumentReference documentReferencertestDiag =
+          _diagCollection.doc(ownerDocId).collection('Diagnostics').doc(docRef);
 
       // DocumentReference documentReferencer = _mainCollection.doc();
-      tempPass = password.randomPassword(
-          letters: true,
-          numbers: true,
-          passwordLength: 7,
-          specialChar: true,
-          uppercase: true);
 
-      print('pass:$tempPass email:${teamLeadMailList[i]['email'].toString()}');
+      final list = await FirebaseAuth.instance
+          .fetchSignInMethodsForEmail(teamLeadMailList[i]['email'].toString());
 
-      await auth
-          .createUserWithEmailAndPassword(
-              email: teamLeadMailList[i]['email'].toString(),
-              password: tempPass)
-          .then((value) => {
-                _mainCollection.doc().set({
-                  "First Name": value.user!.displayName,
-                  "email": value.user!.email,
-                  "OwnerID": ownerDocId,
-                  "Role": "Team Lead",
-                  "id": documentReferencerDiag.id
-                }), //should check if document exists in db or not
-              });
+      // In case list is not empty
+      if (list.isNotEmpty) {
+        // Return true because there is an existing
+        // user using the email address
 
-      Map<String, dynamic> data = <String, dynamic>{
-        "Name": teamLeadMailList[i]['name'].toString(),
-        "Email": teamLeadMailList[i]['email'].toString(),
-        "Self Assessment Result Medium Term": '',
-        "Self Assessment Result Near Term": '',
-        "Role": 'Team Lead',
-        "Self Assessment Status": "TO-DO",
-        "id": documentReferencerDiag.id
-      };
+        print('user exists in DB');
+        var userdocID;
 
-      await documentReferencerDiag
-          .set(data)
-          .whenComplete(() => print("Note item added to the database"))
-          .catchError((e) => print(e));
+        _diagCollection
+            .doc(ownerDocId)
+            .collection('Team')
+            .doc(teamLeadMailList[i]['email'].toString())
+            .update({
+          "${assessNameController.text}": {
+            "Self Assessment Result Medium Term": '',
+            "Self Assessment Result Near Term": '',
+          }
+        });
+
+        //update existing user
+        // FirebaseFirestore.instance
+        //     .collection('Diagnostics')
+        //     .doc(ownerDocId)
+        //     .collection('Team')
+        //     .where('Email', isEqualTo: teamLeadMailList[i]['email'].toString())
+        //     .get()
+        //     .then((value) => value.docs.forEach((element) {
+        //           userdocID = element.get('id');
+        //           // List prev = [];
+        //           // for (var test = 0;
+        //           //     test < element.get('Assessments');
+        //           //     test++) {
+        //           //   prev.add(element.get('Assessments')[test]);
+
+        //           //   print(prev);
+        //           // }
+        //         }))
+        //     .then((value) => {
+        //           _diagCollection
+        //               .doc(ownerDocId)
+        //               .collection('Team')
+        //               .doc(userdocID)
+        //               .update({
+        //             "${assessNameController.text}": {
+        //               "Self Assessment Result Medium Term": '',
+        //               "Self Assessment Result Near Term": '',
+        //             }
+        //           })
+        //         });
+
+        assessNameController.clear();
+
+        // _diagCollection
+        //     .doc(ownerDocId)
+        //     .collection('Team')
+        //     .doc(userdocID)
+        //     .update({
+        //   "Assessments": {
+        //     "${assessNameController.text}": {
+        //       "Self Assessment Result Medium Term": '',
+        //       "Self Assessment Result Near Term": '',
+        //     }
+        //   },
+        // });
+      } else {
+        // Return false because email adress is not in use
+
+        //create new user
+        tempPass = password.randomPassword(
+            letters: true,
+            numbers: true,
+            passwordLength: 7,
+            specialChar: true,
+            uppercase: true);
+
+        print(
+            'pass:$tempPass email:${teamLeadMailList[i]['email'].toString()}');
+
+        await auth
+            .createUserWithEmailAndPassword(
+                email: teamLeadMailList[i]['email'].toString(),
+                password: tempPass)
+            .then((value) => {
+                  _mainCollection.doc().set({
+                    "First Name": value.user!.displayName,
+                    "email": value.user!.email,
+                    "OwnerID": ownerDocId,
+                    "Role": "Team Lead",
+                    "id": documentReferencerDiag.id
+                  }), //should check if document exists in db or not
+                });
+        Map<String, dynamic> data = <String, dynamic>{
+          "Name": teamLeadMailList[i]['name'].toString(),
+          "Email": teamLeadMailList[i]['email'].toString(),
+          "${assessNameController.text}": {
+            "Self Assessment Result Medium Term": '',
+            "Self Assessment Result Near Term": '',
+          },
+          "Role": 'Team Lead',
+          "Self Assessment Status": "TO-DO",
+          "id": documentReferencerDiag.id
+        };
+
+        await documentReferencerDiag
+            .set(data)
+            .whenComplete(() => print("Note item added to the database"))
+            .catchError((e) => print(e));
+      }
     }
-
-    // Map<String, dynamic> data = <String, dynamic>{
-    //   "Skills": outterList,
-
-    // };
-
-    // await documentReferencerDiag
-    //     .set(data)
-    //     .whenComplete(() => print("Note item added to the database"))
-    //     .catchError((e) => print(e));
 
     teamLeadMailList.clear();
   }
@@ -222,6 +294,7 @@ class Database {
     required String diagnName,
     required String email,
     required String from,
+    required String compName,
   }) async {
     // creates a diagnostic collection in the users
     DocumentReference documentReferencer =
@@ -236,7 +309,7 @@ class Database {
     };
 
     Map<String, dynamic> diagData = <String, dynamic>{
-      "Company Name": companyNameController.text,
+      "Company Name": compName,
       // "Reference": diagnName,
       // "Start Date": FieldValue.serverTimestamp(),
       "id": ownerDocId,
@@ -263,14 +336,6 @@ class Database {
         .whenComplete(() => print("Note item added to the database"))
         .catchError((e) => print(e));
 
-    // _firestore.collection('Users')
-    // FirebaseFirestore.instance.collection('Users').doc(userID).update({
-    //   "Company": companyNameController.text,
-    // });
-    // FirebaseFirestore.instance.collection('Users').doc(userID).update({
-    //   "Company": companyNameController.text,
-    // });
-
     collectionRef = diagnName;
     currId = documentReferencerNewDiag.id;
     gDocuId = documentReferencerDiag.id;
@@ -288,34 +353,10 @@ class Database {
     //check if fields are empty or not, to avoid adding empty fields to db
     documentReferencer.update({
       "Company": companyName,
-      "Primary Sector": priSectordropdownValue,
-      "Secondary Sector": secSectordropdownValue,
+      "Primary Sector": primarySec,
+      "Secondary Sector": secondarySec,
     });
 
     print(priSectordropdownValue);
-
-    // await documentReferencer
-    //     .update(data)
-    //     .whenComplete(() => print("Note item updated in the database"))
-    //     .catchError((e) => print(e));
   }
-
-  // static Stream<QuerySnapshot> readItems() {
-  //   CollectionReference notesItemCollection =
-  //       _mainCollection.doc(userUid).collection('items');
-
-  //   return notesItemCollection.snapshots();
-  // }
-
-  // static Future<void> deleteItem({
-  //   required String docId,
-  // }) async {
-  //   DocumentReference documentReferencer =
-  //       _mainCollection.doc(userUid).collection('items').doc(docId);
-
-  //   await documentReferencer
-  //       .delete()
-  //       .whenComplete(() => print('Note item deleted from the database'))
-  //       .catchError((e) => print(e));
-  // }
 }

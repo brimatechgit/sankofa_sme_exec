@@ -8,7 +8,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DiagnosisGraphPage extends StatefulWidget {
   final String ref;
-  const DiagnosisGraphPage({Key? key, required this.ref}) : super(key: key);
+  final ownerID;
+  const DiagnosisGraphPage({Key? key, required this.ref, required this.ownerID})
+      : super(key: key);
 
   @override
   _DiagnosisGraphPageState createState() => _DiagnosisGraphPageState();
@@ -80,7 +82,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
               child: SfCartesianChart(
                 plotAreaBorderWidth: 0,
                 title: ChartTitle(text: ''),
-                legend: Legend(isVisible: false),
+                legend: Legend(isVisible: true),
                 primaryXAxis: DateTimeAxis(
                   isVisible: false,
                   labelIntersectAction: AxisLabelIntersectAction.multipleRows,
@@ -94,6 +96,39 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                 tooltipBehavior: TooltipBehavior(enable: false),
                 series: _getDefaultScatterSeries(),
               ),
+            ),
+
+//show all team members their med and short term skills
+
+            Card(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('/Diagnostics/0aVE0OeC18vY1NRyEOzL/Team')
+                      .snapshots(), //has to be a collection
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    List<ChartSampleData> chartItems = [];
+                    for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                      DocumentSnapshot snap = snapshot.data!.docs[i];
+                      chartItems.add(
+                        ChartSampleData(
+                          x: DateTime(2012), //team short term assessm avr
+                          y: 0.01, //team mid term assessm avr
+                          yValue: -0.03, //team short term assessm avr
+                          secondSeriesYValue:
+                              0.10, //team short term assessm avr
+                        ),
+                      );
+                    }
+
+                    return Text('data: ${chartItems.length}');
+                  }),
             ),
 
             //Team assessment graphs here
@@ -167,8 +202,8 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
 
   List<GDPData> getTeamChartData() {
     final List<GDPData> chartData = [
-      GDPData('Completed', 4),
-      GDPData('InComplete', 2),
+      GDPData('Completed', teamAcompleted),
+      GDPData('InComplete', teamAincomplete),
     ];
     return chartData;
   }
@@ -230,25 +265,26 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
           yValue: 0,
           secondSeriesYValue: 0.02),
     ];
+
     return <ScatterSeries<ChartSampleData, DateTime>>[
       ScatterSeries<ChartSampleData, DateTime>(
           dataSource: chartData,
           opacity: 0.7,
-          xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
+          xValueMapper: (ChartSampleData sales, _) => sales.x,
           yValueMapper: (ChartSampleData sales, _) => sales.y,
           markerSettings: const MarkerSettings(height: 15, width: 15),
           name: 'Brazil'),
       ScatterSeries<ChartSampleData, DateTime>(
           opacity: 0.7,
           dataSource: chartData,
-          xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
+          xValueMapper: (ChartSampleData sales, _) => sales.x,
           yValueMapper: (ChartSampleData sales, _) => sales.yValue,
           markerSettings: const MarkerSettings(height: 15, width: 15),
           name: 'Canada'),
       ScatterSeries<ChartSampleData, DateTime>(
         dataSource: chartData,
         color: const Color.fromRGBO(0, 168, 181, 1),
-        xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
+        xValueMapper: (ChartSampleData sales, _) => sales.x,
         yValueMapper: (ChartSampleData sales, _) => sales.secondSeriesYValue,
         name: 'India',
         markerSettings: const MarkerSettings(height: 15, width: 15),

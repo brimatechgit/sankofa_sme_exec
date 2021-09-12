@@ -86,8 +86,7 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
 
                   //add the teamleade to document, with the user's role
                   await Database.addTeamLeaders(
-                    currID: gDocuId,
-                  );
+                      currID: gDocuId, docRef: assessNameController.text);
                 },
                 child: Text('Finalise'),
               ),

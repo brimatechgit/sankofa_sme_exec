@@ -208,7 +208,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => Verify(
                               nameContr: nameController,
-                              emailContr: emailController,
+                              emailContr: emailController.text,
                             )));
 
                     // user.user!.sendEmailVerification();

@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:sankofa_sme_exec/screens/diagnosisGraphsPage.dart';
 import 'package:sankofa_sme_exec/screens/diagnosticsPage.dart';
 import 'package:sankofa_sme_exec/screens/landingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/companyRegistrationPage.dart';
 import 'package:sankofa_sme_exec/screens/loginPages/signInUpPage.dart';
+import 'package:sankofa_sme_exec/screens/loginPages/verify.dart';
 import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/temp/o_auth_test.dart';
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasError) {
           return Text('Error fetching DB');
         }
+        // vq57oqPgYjo5IrSs2Haq
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
@@ -62,7 +65,16 @@ class MyApp extends StatelessWidget {
             theme: ThemeData.dark(),
             // initialRoute: '/',
             // home: MediumTermSkillsPage(),
+            // home: RegistrationPage(),
+            // home: Verify(nameContr: 'Tshe', emailContr: 'Tshe@tshe.co'),
             home: SignInUpPage(),
+            // home: DiagnosticsPage(
+            //   docID: 'vq57oqPgYjo5IrSs2Haq',
+            //   from: null,
+            // ),
+            // home: DiagnosisGraphPage(
+            //   ref: 'test',
+            // ),
             // home: MyTestApp(),
             routes: Navigate.routes,
             debugShowCheckedModeBanner: false,

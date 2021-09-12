@@ -14,7 +14,9 @@ import 'package:sankofa_sme_exec/utilities/database.dart';
 class LandingPage extends StatefulWidget {
   final docID;
   final from;
-  LandingPage({this.docID, required this.from});
+  final userEmail;
+  final userComp;
+  LandingPage({this.docID, required this.from, this.userEmail, this.userComp});
   @override
   _LandingPageState createState() => _LandingPageState();
 }
@@ -51,6 +53,8 @@ class _LandingPageState extends State<LandingPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => AssessmNamePage(
+                                userComp: this.widget.userComp,
+                                userEmail: this.widget.userEmail,
                                 from: this.widget.from,
                               )));
                 },
@@ -72,8 +76,11 @@ class _LandingPageState extends State<LandingPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DiagnosticsPage(
+                                userEmail: this.widget.userEmail,
                                 from: this.widget.from,
                                 docID: this.widget.docID,
+                                userCompany: this.widget.userComp,
+                                user: user,
                               )));
                 },
                 child: Card(

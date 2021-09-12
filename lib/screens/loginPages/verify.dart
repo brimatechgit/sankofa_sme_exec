@@ -24,6 +24,16 @@ class _VerifyState extends State<Verify> {
   late User user;
   late Timer timer;
 
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {},
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () {},
+  );
+
   @override
   void initState() {
     user = auth.currentUser!;
@@ -48,37 +58,36 @@ class _VerifyState extends State<Verify> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("an email has been sent to ${user.email} please verify"),
+          Text(
+              "an email has been sent to ${this.widget.emailContr} please verify"),
           ElevatedButton(
               onPressed: () async {
-                // if (user.emailVerified) {
-                FirebaseFirestore.instance
-                    .collection("Sectors")
-                    .get()
-                    .then((querySnapshot) {
-                  querySnapshot.docs.forEach((result) {
-                    //should add to the list immediately
-                    setState(() {
-                      sectors.add(result.get('Sector'));
-                    });
-                  });
-                });
+                await user.reload();
+                user = auth.currentUser!;
 
-                //add valid user to db
-                // await Database.addItem(
-                //   uid: user.uid,
-                //   fName: this.widget.nameContr,
-                //   email: this.widget.emailContr,
-                // );
-
-                //push to register only when sectoprs are filled?
-                if (sectors.isNotEmpty && auth.currentUser != null)
+                if (user.emailVerified) {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => RegistrationPage(),
                     ),
                   );
-                // }
+                } else {
+// set up the AlertDialog
+                  AlertDialog alert = AlertDialog(
+                    title: Text("Verification"),
+                    content: Text(
+                        "User email has not been verified. Please verify to continue"),
+                    actions: [cancelButton, continueButton],
+                  );
+
+                  // show the dialog
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return alert;
+                    },
+                  );
+                }
 
                 // Navigator.of(context).pushReplacement(MaterialPageRoute(
                 //     builder: (context) => RegistrationPage()));
