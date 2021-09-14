@@ -119,15 +119,62 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                       chartItems.add(
                         ChartSampleData(
                           x: DateTime(2012), //team short term assessm avr
-                          y: 0.01, //team mid term assessm avr
-                          yValue: -0.03, //team short term assessm avr
+                          y: 0.11, //team mid term assessm avr
+                          yValue: -2.03, //team short term assessm avr
                           secondSeriesYValue:
                               0.10, //team short term assessm avr
                         ),
                       );
                     }
 
-                    return Text('data: ${chartItems.length}');
+                    return SfCartesianChart(
+                        plotAreaBorderWidth: 0,
+                        title: ChartTitle(text: ''),
+                        legend: Legend(isVisible: false),
+                        primaryXAxis: DateTimeAxis(
+                          isVisible: false,
+                          labelIntersectAction:
+                              AxisLabelIntersectAction.multipleRows,
+                          majorGridLines: const MajorGridLines(width: 0),
+                        ),
+                        primaryYAxis: NumericAxis(
+                            labelFormat: '{value}%',
+                            isVisible: false,
+                            axisLine: const AxisLine(width: 0),
+                            minorTickLines: const MinorTickLines(size: 0)),
+                        tooltipBehavior: TooltipBehavior(enable: false),
+                        series: <ScatterSeries<ChartSampleData, DateTime>>[
+                          ScatterSeries<ChartSampleData, DateTime>(
+                              dataSource: chartItems,
+                              opacity: 0.7,
+                              xValueMapper: (ChartSampleData sales, _) =>
+                                  sales.x,
+                              yValueMapper: (ChartSampleData sales, _) =>
+                                  sales.y,
+                              markerSettings:
+                                  const MarkerSettings(height: 15, width: 15),
+                              name: 'Brazil'),
+                          ScatterSeries<ChartSampleData, DateTime>(
+                              opacity: 0.7,
+                              dataSource: chartItems,
+                              xValueMapper: (ChartSampleData sales, _) =>
+                                  sales.x,
+                              yValueMapper: (ChartSampleData sales, _) =>
+                                  sales.yValue,
+                              markerSettings:
+                                  const MarkerSettings(height: 15, width: 15),
+                              name: 'Canada'),
+                          ScatterSeries<ChartSampleData, DateTime>(
+                            dataSource: chartItems,
+                            color: const Color.fromRGBO(0, 168, 181, 1),
+                            xValueMapper: (ChartSampleData sales, _) => sales.x,
+                            yValueMapper: (ChartSampleData sales, _) =>
+                                sales.secondSeriesYValue,
+                            name: 'India',
+                            markerSettings:
+                                const MarkerSettings(height: 15, width: 15),
+                          )
+                        ]);
                   }),
             ),
 
