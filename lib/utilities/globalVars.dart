@@ -3,7 +3,7 @@ import 'package:sankofa_sme_exec/functions/randomchars.dart';
 int totalNearTermSkills = 0;
 int totalMidTermSkills = 0;
 
-int completed = 0;
+int completed = 3;
 int incomplete = 1;
 
 int teamAcompleted = 0;
