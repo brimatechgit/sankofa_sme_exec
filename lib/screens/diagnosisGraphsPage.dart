@@ -157,7 +157,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                             markerSettings: const MarkerSettings(
                                 width: 15,
                                 height: 15,
-                                shape: DataMarkerType.diamond),
+                                shape: DataMarkerType.circle),
                             name: 'India'),
                         ScatterSeries<ChartSampleData, num>(
                             dataSource: chartData,
@@ -168,7 +168,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                             markerSettings: const MarkerSettings(
                                 width: 15,
                                 height: 15,
-                                shape: DataMarkerType.triangle),
+                                shape: DataMarkerType.circle),
                             name: 'China'),
                         ScatterSeries<ChartSampleData, num>(
                             dataSource: chartData,
@@ -179,7 +179,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                             markerSettings: const MarkerSettings(
                                 width: 15,
                                 height: 15,
-                                shape: DataMarkerType.pentagon),
+                                shape: DataMarkerType.circle),
                             name: 'Japan')
                       ];
                     }

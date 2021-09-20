@@ -11,6 +11,8 @@ import 'package:sankofa_sme_exec/widgets/BottomNav.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:sankofa_sme_exec/utilities/database.dart';
 
+import 'ProfilePage/Profile_page.dart';
+
 class LandingPage extends StatefulWidget {
   final docID;
   final from;
@@ -27,21 +29,20 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                          uName: '',
+                          uEmail: this.widget.userEmail,
+                        )));
+          },
+        ),
         title: Text('Home'),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-            onPressed: () async {
-              FirebaseService service = new FirebaseService();
-              await service.signOutFromGoogle();
-              Navigator.pushReplacementNamed(context, Constants.signInNavigate);
-            },
-          )
-        ],
       ),
       body: Column(children: [
         Expanded(
