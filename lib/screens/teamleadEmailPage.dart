@@ -38,25 +38,6 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
 
-  Future<void> send() async {
-    final Email email = Email(
-      body: 'Email body',
-      subject: 'Email subject',
-      recipients: ['tshepang@sankofa.digital'],
-      isHTML: false,
-    );
-
-    String platformResponse;
-
-    try {
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      platformResponse = error.toString();
-      print(platformResponse);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,12 +146,13 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {
+                                        //email team leaders
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ReviewMailPage()));
-                                        send();
                                       },
                                       child: Text('Proceed')),
                                   ElevatedButton(
@@ -203,85 +185,5 @@ class _TeamLeadMailPageState extends State<TeamLeadMailPage> {
                 )),
           ]),
         ));
-  }
-}
-
-// email() async {
-//   String username = 'bogosi@sankofa.digital';
-//   String password = '';
-
-//   final smtpServer = gmail(username, password);
-//   // Use the SmtpServer class to configure an SMTP server:
-//   // final smtpServer = SmtpServer('smtp.domain.com');
-//   // See the named arguments of SmtpServer for further configuration
-//   // options.
-
-//   // Create our message.
-//   final message = Message()
-//     ..from = Address(username, 'Your name')
-//     ..recipients.add('tshepang@sankofa.digital')
-//     ..ccRecipients.add('bogosim15@gmail.com')
-//     ..bccRecipients.add(Address(''))
-//     ..subject =
-//         'Test Dart Mailer for Emailing Team Leads :: 😀 :: ${DateTime.now()}'
-//     ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-//     ..html =
-//         "<h1>emailing team leads with instructions</h1>\n<p>Hey! Congratulations on being a Team Lead these are your instructions</p>";
-
-//   try {
-//     final sendReport = await send(message, smtpServer);
-//     print('Message sent: ' + sendReport.toString());
-//   } on MailerException catch (e) {
-//     print('Message not sent.');
-//     for (var p in e.problems) {
-//       print('Problem: ${p.code}: ${p.msg}');
-//     }
-//   }
-//   // DONE
-
-//   // Sending multiple messages with the same connection
-//   //
-//   // Create a smtp client that will persist the connection
-//   var connection = PersistentConnection(smtpServer);
-
-//   // Send the first message
-//   await connection.send(message);
-
-//   // close the connection
-//   await connection.close();
-// }
-
-email2() async {
-  final Email email = Email(
-    body: 'Email body',
-    subject: 'Email subject',
-    recipients: ['tshepang@sankofa.digital'],
-    cc: ['cc@example.com'],
-    bcc: ['bcc@example.com'],
-    attachmentPaths: ['/path/to/attachment.zip'],
-    isHTML: false,
-  );
-
-  await FlutterEmailSender.send(email);
-}
-
-Future<void> send() async {
-  final Email email = Email(
-    body: 'Email body',
-    subject: 'Email subject',
-    recipients: ['tshepang@sankofa.digital'],
-    cc: ['cc@example.com'],
-    bcc: ['bcc@example.com'],
-    attachmentPaths: ['/path/to/attachment.zip'],
-    isHTML: false,
-  );
-
-  String platformResponse;
-
-  try {
-    await FlutterEmailSender.send(email);
-    platformResponse = 'success';
-  } catch (error) {
-    platformResponse = error.toString();
   }
 }

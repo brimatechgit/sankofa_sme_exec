@@ -236,6 +236,144 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
                         series: _getScatterShapesSeries());
                   }),
             ),
+            Card(
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('/Diagnostics/0aVE0OeC18vY1NRyEOzL/Team')
+                      .snapshots(), //has to be a collection
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    List<ChartSampleData> chartItems = [];
+                    for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                      DocumentSnapshot snap = snapshot.data!.docs[i];
+                      chartItems.add(
+                        ChartSampleData(
+                          x: 25.0 / i, //team short term assessm avr
+                          y: 0.11, //team mid term assessm avr
+                          yValue: -2.03, //team short term assessm avr
+                          thirdSeriesYValue: 0.10, //team short term assessm avr
+                        ),
+                      );
+                    }
+                    List<ScatterSeries<ChartSampleData, num>>
+                        _getScatterShapesSeries() {
+                      final List<ChartSampleData> chartData = <ChartSampleData>[
+                        ChartSampleData(x: 19, y: 4.2, yValue: 6.4),
+                        ChartSampleData(
+                          x: 12,
+                          y: 2.8,
+                        ),
+                        ChartSampleData(
+                          x: 8,
+                          y: 2.9,
+                          yValue: 4.5,
+                        ),
+                        ChartSampleData(
+                          x: 25,
+                          y: 10,
+                        ),
+                        // ChartSampleData(
+                        //     x: 1945, y: 8.4, yValue: 2.4, thirdSeriesYValue: 6),
+                        // ChartSampleData(
+                        //     x: 1975,
+                        //     y: 4.6,
+                        //     yValue: 8.4,
+                        //     thirdSeriesYValue: 6.2),
+                      ];
+                      return <ScatterSeries<ChartSampleData, num>>[
+                        ScatterSeries<ChartSampleData, num>(
+                            dataSource: chartData,
+                            xValueMapper: (ChartSampleData sales, _) =>
+                                sales.x as num,
+                            yValueMapper: (ChartSampleData sales, _) => sales.y,
+                            markerSettings: const MarkerSettings(
+                                width: 15,
+                                height: 15,
+                                shape: DataMarkerType.circle),
+                            name: 'India'),
+                        ScatterSeries<ChartSampleData, num>(
+                            dataSource: chartData,
+                            xValueMapper: (ChartSampleData sales, _) =>
+                                sales.x as num,
+                            yValueMapper: (ChartSampleData sales, _) => sales.y,
+                            markerSettings: const MarkerSettings(
+                                width: 15,
+                                height: 15,
+                                shape: DataMarkerType.circle),
+                            name: 'China'),
+                        // ScatterSeries<ChartSampleData, num>(
+                        //     dataSource: chartData,
+                        //     xValueMapper: (ChartSampleData sales, _) =>
+                        //         sales.x as num,
+                        //     yValueMapper: (ChartSampleData sales, _) =>
+                        //         sales.thirdSeriesYValue,
+                        //     markerSettings: const MarkerSettings(
+                        //         width: 15,
+                        //         height: 15,
+                        //         shape: DataMarkerType.circle),
+                        //     name: 'Japan')
+                      ];
+                    }
+
+                    return SfCartesianChart(
+                        plotAreaBorderWidth: 0,
+                        title: ChartTitle(text: ''),
+                        legend: Legend(isVisible: false),
+                        margin: EdgeInsets.all(5),
+                        primaryXAxis: NumericAxis(
+                          isVisible: false,
+                          labelIntersectAction:
+                              AxisLabelIntersectAction.multipleRows,
+                          majorGridLines: const MajorGridLines(width: 0),
+                        ),
+                        primaryYAxis: NumericAxis(
+                            labelFormat: '{value}%',
+                            isVisible: false,
+                            axisLine: const AxisLine(width: 0),
+                            minorTickLines: const MinorTickLines(size: 0)),
+                        tooltipBehavior: TooltipBehavior(enable: false),
+                        // series: <ScatterSeries<ChartSampleData, num>>[
+                        //   ScatterSeries<ChartSampleData, num>(
+                        //       dataSource: chartItems,
+                        //       opacity: 0.7,
+                        //       xValueMapper: (ChartSampleData sales, _) =>
+                        //           sales.x as num,
+                        //       yValueMapper: (ChartSampleData sales, _) =>
+                        //           sales.y,
+                        //       markerSettings:
+                        //           const MarkerSettings(height: 15, width: 15),
+                        //       name: 'Brazil'),
+                        //   ScatterSeries<ChartSampleData, num>(
+                        //       opacity: 0.7,
+                        //       dataSource: chartItems,
+                        //       xValueMapper: (ChartSampleData sales, _) =>
+                        //           sales.x,
+                        //       yValueMapper: (ChartSampleData sales, _) =>
+                        //           sales.yValue,
+                        //       markerSettings:
+                        //           const MarkerSettings(height: 15, width: 15),
+                        //       name: 'Canada'),
+                        //   ScatterSeries<ChartSampleData, num>(
+                        //     dataSource: chartItems,
+                        //     color: const Color.fromRGBO(0, 168, 181, 1),
+                        //     xValueMapper: (ChartSampleData sales, _) =>
+                        //         sales.x as double,
+                        //     yValueMapper: (ChartSampleData sales, _) =>
+                        //         sales.yValue,
+                        //     name: 'India',
+                        //     markerSettings:
+                        //         const MarkerSettings(height: 15, width: 15),
+                        //   )
+                        // ]
+                        series: _getScatterShapesSeries());
+                  }),
+            ),
 
             //Team assessment graphs here
 
@@ -301,7 +439,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
   List<GDPData> getSelfChartData() {
     final List<GDPData> chartData = [
       GDPData('Completed', completed),
-      GDPData('InComplete', incomplete),
+      GDPData('WIP', incomplete),
     ];
     return chartData;
   }
@@ -309,7 +447,7 @@ class _DiagnosisGraphPageState extends State<DiagnosisGraphPage> {
   List<GDPData> getTeamChartData() {
     final List<GDPData> chartData = [
       GDPData('Completed', teamAcompleted),
-      GDPData('InComplete', teamAincomplete),
+      GDPData('WIP', teamAincomplete),
     ];
     return chartData;
   }
@@ -407,12 +545,9 @@ class GDPData {
 
 class ChartSampleData {
   ChartSampleData(
-      {required this.x,
-      required this.y,
-      required this.thirdSeriesYValue,
-      required this.yValue});
+      {required this.x, required this.y, this.thirdSeriesYValue, this.yValue});
   final num x;
   final num y;
-  final num yValue;
-  final num thirdSeriesYValue;
+  var yValue;
+  var thirdSeriesYValue;
 }

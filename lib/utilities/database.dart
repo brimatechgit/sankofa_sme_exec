@@ -9,6 +9,8 @@ import 'package:sankofa_sme_exec/screens/skillScreens/mediumTermSkills.dart';
 import 'package:sankofa_sme_exec/screens/skillSetsPage.dart';
 import 'package:sankofa_sme_exec/screens/teamleadEmailPage.dart';
 import 'package:sankofa_sme_exec/utilities/globalVars.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('Users');
@@ -121,10 +123,41 @@ class Database {
     required String currID,
     required String docRef,
   }) async {
-    // DocumentReference documentReferencer = _mainCollection.doc(email).collection('Diagnostics').doc(); //should check if document exists in db or not
-// var query = FirebaseFirestore.instance.collection('Diagnostics').where("Company Name" == compName);
+    Future sendEmail({
+      required String name,
+      required String email,
+      required String toEmail,
+      required String subject,
+      required String message,
+    }) async {
+      final serviceId = 'service_u6mtk8i';
+      final templateId = 'template_pg24hey';
+      final userId = 'user_uwcuSaocDLWGrcBSZlY0s';
 
-// print(query.id);
+      final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+      final response = await http.post(
+        url,
+        headers: {
+          'origin': 'http://localhost',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'service_id': serviceId,
+          'template_id': templateId,
+          'user_id': userId,
+          'template_params': {
+            'user_name': name,
+            'to_email': toEmail,
+            'user_email': email,
+            'user_subject': subject,
+            'user_message': message,
+          }
+        }),
+      );
+
+      print(response.body);
+    }
+
     for (var i = 0; i < teamLeadMailList.length; i++) {
       DocumentReference documentReferencerDiag = _diagCollection
           .doc(ownerDocId)
@@ -215,6 +248,20 @@ class Database {
 
         print(
             'pass:$tempPass email:${teamLeadMailList[i]['email'].toString()}');
+
+        var message =
+            '''Please sign into Sankofa assessments app using the following logins.\n
+              User email: ${teamLeadMailList[i]['email'].toString()}.\n
+              User temporary password:$tempPass.\n
+              Please go into user settings and change your password.''';
+
+        //send email
+        sendEmail(
+            email: 'tshepang@sankofa.digital',
+            message: '$message',
+            name: '${teamLeadMailList[i]['name']}',
+            subject: 'Team Lead invitation',
+            toEmail: '${teamLeadMailList[i]['email']}');
 
         await auth
             .createUserWithEmailAndPassword(

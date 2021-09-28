@@ -67,11 +67,6 @@ class _ReviewMailPageState extends State<ReviewMailPage> {
               padding: const EdgeInsets.all(25.0),
               child: ElevatedButton(
                 onPressed: () async {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => LandingPage(docID: userID,)));
-
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LandingPage(
