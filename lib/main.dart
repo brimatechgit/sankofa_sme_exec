@@ -67,15 +67,15 @@ class MyApp extends StatelessWidget {
             // home: MediumTermSkillsPage(),
             // home: RegistrationPage(),
             // home: Verify(nameContr: 'Tshe', emailContr: 'Tshe@tshe.co'),
-            home: SignInUpPage(),
+            // home: SignInUpPage(),
             // home: DiagnosticsPage(
             //   docID: 'vq57oqPgYjo5IrSs2Haq',
             //   from: null,
             // ),
-            // home: DiagnosisGraphPage(
-            //   ownerID: '',
-            //   ref: 'test',
-            // ),
+            home: DiagnosisGraphPage(
+              ownerID: '',
+              ref: 'test',
+            ),
             // home: MyTestApp(),
             routes: Navigate.routes,
             debugShowCheckedModeBanner: false,
